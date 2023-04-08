@@ -1,18 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "personagem.h"
 
-//campo dos structs:
-struct Personagem{
-    int vida;
-    float ataque, velocidade;
-};
-
-//campo das funções:
-struct Personagem muda_vida(struct Personagem personagem, int valor_dano){
-    personagem.vida += valor_dano;
-
-    return personagem;
-}
 
 int main()
 {
