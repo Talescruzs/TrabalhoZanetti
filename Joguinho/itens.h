@@ -11,13 +11,4 @@ struct Pocao{
     int vida;
 };
 
-struct Veneno{
-    int vida;
-};
-
-struct Bota{
-    int velocidade;
-};
-
 #endif
-
