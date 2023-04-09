@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1680972847 source:c:\users\tcs20\repositorios\trabalhozanetti\joguinho\main.c
+1680973017 source:c:\users\tcs20\repositorios\trabalhozanetti\joguinho\main.c
 	<stdio.h>
 	<stdlib.h>
-	"teste.h"
+	"personagem.h"
 
 1680972286 source:c:\users\tcs20\repositorios\trabalhozanetti\joguinho\teste.c
 	<stdio.h>
@@ -10,4 +10,11 @@
 	"teste.h"
 
 1680972705 c:\users\tcs20\repositorios\trabalhozanetti\joguinho\teste.h
+
+1680973055 c:\users\tcs20\repositorios\trabalhozanetti\joguinho\personagem.h
+
+1680973011 source:c:\users\tcs20\repositorios\trabalhozanetti\joguinho\personagem.c
+	<stdio.h>
+	<stdio.h>
+	"personagem.h"
 
