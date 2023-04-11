@@ -483,8 +483,17 @@
 
 1362338300 c:\allegro\allegromingw\include\allegro5\allegro_image.h
 
-1479131470 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\main.c
-	<stdio.h>
+1681250272 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\main.c
 	<allegro5/allegro.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
 	<allegro5/allegro_image.h>
+	<allegro5/keyboard.h>
+
+1372639132 c:\allegro\allegromingw\include\allegro5\allegro_font.h
+	"allegro5/allegro.h"
+
+1362338300 c:\allegro\allegromingw\include\allegro5\allegro_ttf.h
+	"allegro5/allegro.h"
+	"allegro5/allegro_font.h"
 

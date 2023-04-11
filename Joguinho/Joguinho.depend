@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1681075542 source:c:\users\tcs20\repositorios\trabalhozanetti\joguinho\main.c
+1681213490 source:c:\users\tcs20\repositorios\trabalhozanetti\joguinho\main.c
 	<stdio.h>
 	<stdlib.h>
 	"personagem.h"
@@ -12,10 +12,10 @@
 
 1680972705 c:\users\tcs20\repositorios\trabalhozanetti\joguinho\teste.h
 
-1681075790 c:\users\tcs20\repositorios\trabalhozanetti\joguinho\personagem.h
+1681215121 c:\users\tcs20\repositorios\trabalhozanetti\joguinho\personagem.h
 	"itens.h"
 
-1681075766 source:c:\users\tcs20\repositorios\trabalhozanetti\joguinho\personagem.c
+1681215121 source:c:\users\tcs20\repositorios\trabalhozanetti\joguinho\personagem.c
 	"personagem.h"
 	"itens.h"
 

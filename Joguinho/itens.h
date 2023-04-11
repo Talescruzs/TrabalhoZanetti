@@ -11,4 +11,7 @@ struct Pocao{
     int vida;
 };
 
+// funções:
+struct Arma cria_arma(char nome[20], int alcance, float dano);
+
 #endif

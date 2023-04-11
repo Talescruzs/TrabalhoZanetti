@@ -21,7 +21,7 @@ int main()
     struct Pocao pocao = POCAO();
 
     // definindo personagens:
-    struct Personagem personagem1 = HEROI();
+    struct Personagem personagem1 = Cria_personagem(50, 3, 1, arma);
     struct Personagem personagem2 = INIMIGO_CHEFE();
 
     //equipar:
