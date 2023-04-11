@@ -7,25 +7,25 @@
 #define INIMIGO_BASICO(...) { .vida = 10, .ataque = 1, .velocidade = 5, .arma = {"nada", 1, 0}}
 #define INIMIGO_MEDIO(...) { .vida = 30, .ataque = 3, .velocidade = 3, .arma = {"nada", 2, 0}}
 #define INIMIGO_CHEFE(...) { .vida = 150, .ataque = 7, .velocidade = 2, .arma = {"nada", 3, 0}}
-//armas:
-#define ARMA_BASICA(...) { .nome = "adaga", .alcance = 1, .dano = 2}
-#define ARMA_MEDIA(...) { .nome = "espada", .alcance = 2, .dano = 5}
-#define ARMA_BOA(...) { .nome = "machado", .alcance = 3, .dano = 15}
 //pocao:
 #define POCAO(...) { .vida = 5}
 
 int main()
 {
     //itens:
-    struct Arma arma = ARMA_BASICA();
+    struct Arma mao = cria_arma("nada", 1, 0);
+    struct Arma adaga = cria_arma("adaga", 1, 2);
+    struct Arma espada = cria_arma("espada", 2, 5);
+    struct Arma machado = cria_arma("machado", 3, 15);
+
     struct Pocao pocao = POCAO();
 
     // definindo personagens:
-    struct Personagem personagem1 = Cria_personagem(50, 3, 1, arma);
+    struct Personagem personagem1 = cria_personagem(50, 3, 1, mao);
     struct Personagem personagem2 = INIMIGO_CHEFE();
 
     //equipar:
-    personagem1.arma = arma;
+    personagem1.arma = espada;
 
     // batalha entre eles:
     int flag = 1;

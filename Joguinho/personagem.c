@@ -2,7 +2,7 @@
 #include "itens.h"
 
 //campo das funções:
-struct Personagem Cria_personagem(int vida, float ataque, float velocidade, struct Arma arma){
+struct Personagem cria_personagem(int vida, float ataque, float velocidade, struct Arma arma){
     struct Personagem personagem = { vida, ataque, velocidade, arma};
 
     return personagem;
@@ -16,7 +16,8 @@ struct Personagem muda_vida(struct Personagem personagem, int valor){
     return personagem;
 }
 
-float dano_real(struct Personagem personagem){
-    return personagem.ataque+personagem.arma.dano;
+int dano_real(struct Personagem personagem){
+    printf("%d", personagem.arma.dano);
+    return (personagem.ataque+personagem.arma.dano);
 }
 

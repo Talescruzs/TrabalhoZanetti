@@ -9,10 +9,10 @@ struct Personagem{
 };
 
 //funcoes:
-struct Personagem Cria_personagem(int vida, float ataque, float velocidade, struct Arma arma);
+struct Personagem cria_personagem(int vida, float ataque, float velocidade, struct Arma arma);
 
 struct Personagem muda_vida(struct Personagem personagem, int valor);
 
-float dano_real(struct Personagem personagem);
+int dano_real(struct Personagem personagem);
 
 #endif

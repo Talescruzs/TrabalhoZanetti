@@ -21,7 +21,7 @@ int main (){
     //CONFIGURAÇÕES BASE QUE SERÃO UTILIZADAS
     ALLEGRO_BITMAP* spriteHeroi = al_load_bitmap("./imagens/teste.png");
     ALLEGRO_FONT* font = al_create_builtin_font();
-    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 30.0);
+    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
 
     //FILA DE EVENTOS
     ALLEGRO_EVENT_QUEUE * event_queue = al_create_event_queue();
@@ -58,19 +58,19 @@ int main (){
 
             switch(event.keyboard.keycode){
                 case ALLEGRO_KEY_RIGHT:
-                    pos_x += 10;
+                    pos_x += 5;
                     current_frame_y = 161;
                     break;
                 case ALLEGRO_KEY_LEFT:
-                    pos_x -= 10;
+                    pos_x -= 5;
                     current_frame_y = 161*3;
                     break;
                 case ALLEGRO_KEY_UP:
-                    pos_y -= 10;
+                    pos_y -= 5;
                     current_frame_y = 0;
                     break;
                 case ALLEGRO_KEY_DOWN:
-                    pos_y += 10;
+                    pos_y += 5;
                     current_frame_y = 161*2;
                     break;
                 case ALLEGRO_KEY_ESCAPE:

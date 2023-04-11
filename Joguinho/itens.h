@@ -3,8 +3,7 @@
 
 struct Arma{
     char nome[20];
-    int alcance;
-    float dano;
+    int alcance, dano;
 };
 
 struct Pocao{
@@ -12,6 +11,6 @@ struct Pocao{
 };
 
 // funções:
-struct Arma cria_arma(char nome[20], int alcance, float dano);
+struct Arma cria_arma(char nome[20], int alcance, int dano);
 
 #endif
