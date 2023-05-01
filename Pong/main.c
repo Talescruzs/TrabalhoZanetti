@@ -4,7 +4,16 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/keyboard.h>
 
+#include "personagem.h"
+#include "itens.h"
+#include "frame.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
 int main (){
+
+    struct Personagem personagem1 = cria_personagem(50, 3, 1, mao, personagem_principal_f);
 
     //INICIAÇÕES DAS BIBLIOTECAS
     al_init();
@@ -19,7 +28,7 @@ int main (){
     al_set_window_title(display, "Jooj");
 
     //CONFIGURAÇÕES BASE QUE SERÃO UTILIZADAS
-    ALLEGRO_BITMAP* spriteHeroi = al_load_bitmap("./imagens/teste.png");
+    ALLEGRO_BITMAP* spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
     ALLEGRO_FONT* font = al_create_builtin_font();
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
 
@@ -32,7 +41,8 @@ int main (){
 
     //VARIAVEIS BASE
     float frame = 0.f;
-    int pos_x = 0, pos_y = 0, current_frame_y = 161;
+    int pos_x = 0, pos_y = 0, tam_y_f = personagem1.frame.total_y/personagem1.frame.n_linhas, tam_x_f = personagem1.frame.total_x/personagem1.frame.n_colunas;
+    int current_frame_y = tam_y_f;
 
     while(true){
 
@@ -51,19 +61,19 @@ int main (){
                 event.keyboard.keycode==ALLEGRO_KEY_DOWN
             ){
                 frame += 0.3f;
-                if( frame > 3){ //movimento do personagem
-                    frame -= 3;
+                if( frame > personagem1.frame.n_colunas){ //movimento do personagem
+                    frame -= personagem1.frame.n_colunas;
                 }
             }
 
             switch(event.keyboard.keycode){
                 case ALLEGRO_KEY_RIGHT:
                     pos_x += 5;
-                    current_frame_y = 161;
+                    current_frame_y = tam_y_f;
                     break;
                 case ALLEGRO_KEY_LEFT:
                     pos_x -= 5;
-                    current_frame_y = 161*3;
+                    current_frame_y = tam_y_f*3;
                     break;
                 case ALLEGRO_KEY_UP:
                     pos_y -= 5;
@@ -71,7 +81,7 @@ int main (){
                     break;
                 case ALLEGRO_KEY_DOWN:
                     pos_y += 5;
-                    current_frame_y = 161*2;
+                    current_frame_y = tam_y_f*2;
                     break;
                 case ALLEGRO_KEY_ESCAPE:
                     goto exit_loop;
@@ -82,7 +92,7 @@ int main (){
         //DESENHO DA TELA (LEMBRA QUE O DE BAIXO SOBRESCREVE O DE CIMA)
         al_clear_to_color(al_map_rgb(0,0,0));
 
-        al_draw_bitmap_region(spriteHeroi, 191 * (int)frame, current_frame_y, 191, 161, pos_x, pos_y, 0);
+        al_draw_bitmap_region(spriteHeroi, tam_x_f * (int)frame, current_frame_y, tam_x_f, tam_y_f, pos_x, pos_y, 0);
         al_draw_text(font, al_map_rgb(255,255,255), 230, 200, 0, "Allegro is working!");
 
         al_flip_display();
