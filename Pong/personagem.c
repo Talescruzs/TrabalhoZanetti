@@ -8,7 +8,6 @@ struct Personagem cria_personagem(int vida, int pos_inicial_x, int pos_inicial_y
 
     return personagem;
 }
-
 struct Personagem muda_vida(struct Personagem personagem, int valor){
     personagem.vida += valor;
     if(personagem.vida < 0){
@@ -25,4 +24,14 @@ int *pega_frame(struct Personagem personagem){
     int dados[] = {(personagem.frame.total_y/personagem.frame.n_linhas), (personagem.frame.total_x/personagem.frame.n_colunas)};
     return dados;
 }
+
+
+
+
+
+
+
+
+
+
 
