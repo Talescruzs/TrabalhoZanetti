@@ -106,9 +106,21 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="frame.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="frame.h" />
+		<Unit filename="itens.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="itens.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="personagem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="personagem.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
