@@ -52,7 +52,7 @@ struct Personagem colision_personagem(struct Personagem personagem, struct Perso
            ){
             personagem.colision.left = 1;
             personagem.pos_x+=50;
-            personagem.vida -=5;
+            personagem.vida -=dano_real(npc);
         }else{
             personagem.colision.left = 0;
         }
@@ -61,7 +61,7 @@ struct Personagem colision_personagem(struct Personagem personagem, struct Perso
            ){
             personagem.colision.right = 1;
             personagem.pos_x-=50;
-            personagem.vida -=5;
+            personagem.vida -=dano_real(npc);
         }else{
             personagem.colision.right = 0;
         }
@@ -79,7 +79,7 @@ struct Personagem colision_personagem(struct Personagem personagem, struct Perso
            ){
             personagem.colision.up = 1;
             personagem.pos_y+=30;
-            personagem.vida -=5;
+            personagem.vida -=dano_real(npc);
         }else{
             personagem.colision.up = 0;
         }
@@ -89,7 +89,7 @@ struct Personagem colision_personagem(struct Personagem personagem, struct Perso
            ){
             personagem.colision.down = 1;
             personagem.pos_y-=30;
-            personagem.vida -=5;
+            personagem.vida -=dano_real(npc);
         }else{
             personagem.colision.down = 0;
         }
