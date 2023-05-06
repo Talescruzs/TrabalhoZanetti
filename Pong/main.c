@@ -15,7 +15,7 @@ enum keys{UP, DOWN, LEFT, RIGHT, Z};
 
 int main (){
     int i;
-    int n_npc = 5, tam_disp_x = 800, tam_disp_y = 500;
+    int n_npc = 5, tam_disp_x = 1000, tam_disp_y = 500, velocidade = 5;
     bool keys [5] = {false, false, false, false, false};
 
     //CRIAÇÃO DE PERSONAGENS
@@ -34,7 +34,7 @@ int main (){
 
     //DECLARAÇÕES DA JANELA
     ALLEGRO_DISPLAY * display = al_create_display(tam_disp_x,tam_disp_y);
-    al_set_window_position(display, 100, 10);
+    al_set_window_position(display, 10, 10);
     al_set_window_title(display, "Jooj");
 
     //TEXTOS DA TELA DO JOGO
@@ -85,11 +85,15 @@ int main (){
         nome_arma = personagem1.arma.nome;
 
         //FUNÇÕES DO JOGO
-        if(personagem1.vida == 0 || npc[0].vida == 0){
-            texto = "ACABOU A BATALHA";
+        if(personagem1.vida <= 0){
+            texto = "VOCE PERDEU!!";
         }
 
-        personagem1 = colision_parede(personagem1, tam_disp_x, tam_disp_y);
+        for(i=0; i<n_npc; i++){
+            npc[i] = colision_parede(npc[i], tam_disp_x, tam_disp_y);
+            personagem1 = colision_final(personagem1, npc[i], tam_disp_x, tam_disp_y);
+        }
+        //personagem1 = colision_parede(personagem1, tam_disp_x, tam_disp_y);
 
         if( event.type == ALLEGRO_EVENT_DISPLAY_CLOSE ){ //fecha
           break;
@@ -156,25 +160,27 @@ int main (){
         }
         //FAZ O MOVIMENTO DO PERSONAGEM
         if(keys[UP] && personagem1.colision.up==0){
-            personagem1.pos_y -= 2;
+            personagem1.pos_y -= velocidade;
             current_frame_y_pp = 0;
         }
         if(keys[DOWN] && personagem1.colision.down==0){
-            personagem1.pos_y += 2;
+            personagem1.pos_y += velocidade;
             current_frame_y_pp = tam_y_f_pp*2;
         }
         if(keys[RIGHT] && personagem1.colision.right==0){
-            personagem1.pos_x += 2;
+            personagem1.pos_x += velocidade;
             current_frame_y_pp = tam_y_f_pp;
         }
         if(keys[LEFT] && personagem1.colision.left==0){
-            personagem1.pos_x -= 2;
+            personagem1.pos_x -= velocidade;
             current_frame_y_pp = tam_y_f_pp*3;
         }
 
         //DESENHO DA TELA (LEMBRA QUE O DE BAIXO SOBRESCREVE O DE CIMA)
         al_clear_to_color(al_map_rgb(0,0,0));
-        al_draw_bitmap_region(spriteHeroi, tam_x_f_pp * (int)frame, current_frame_y_pp, tam_x_f_pp, tam_y_f_pp, personagem1.pos_x, personagem1.pos_y, 0);
+        if(personagem1.vida>0){
+            al_draw_bitmap_region(spriteHeroi, tam_x_f_pp * (int)frame, current_frame_y_pp, tam_x_f_pp, tam_y_f_pp, personagem1.pos_x, personagem1.pos_y, 0);
+        }
         //DESENHA NPCS
         for(i=0; i<n_npc; i++){
             if(npc[i].vida>0){
@@ -183,10 +189,12 @@ int main (){
         }
         //MUCHO TEXTO
         al_draw_text(font, al_map_rgb(255,255,255), 230, 200, 0, texto);
-        al_draw_text(font, al_map_rgb(255,255,255), 50, 50, 0, menu_arma);
-        al_draw_text(font, al_map_rgb(255,255,255), 90, 50, 0, nome_arma);
-        al_draw_text(font, al_map_rgb(255,255,255), 50, 70, 0, menu_vida);
-        al_draw_text(font, al_map_rgb(255,255,255), 90, 70, 0, nome_vida);
+        if(personagem1.vida>0){
+            al_draw_text(font, al_map_rgb(255,255,255), 50, 50, 0, menu_arma);
+            al_draw_text(font, al_map_rgb(255,255,255), 90, 50, 0, nome_arma);
+            al_draw_text(font, al_map_rgb(255,255,255), 50, 70, 0, menu_vida);
+            al_draw_text(font, al_map_rgb(255,255,255), 90, 70, 0, nome_vida);
+        }
 
         al_flip_display();
     }
