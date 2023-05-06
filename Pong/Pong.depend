@@ -483,7 +483,7 @@
 
 1362338300 c:\allegro\allegromingw\include\allegro5\allegro_image.h
 
-1683294024 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\main.c
+1683320521 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\main.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
@@ -507,12 +507,12 @@
 
 1682963058 c:\users\tcs20\repositorios\trabalhozanetti\pong\itens.h
 
-1683314709 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.c
+1683320574 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.c
 	"personagem.h"
 	"itens.h"
 	"frame.h"
 
-1683314671 c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.h
+1683320530 c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.h
 	"itens.h"
 	"frame.h"
 

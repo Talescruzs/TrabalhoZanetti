@@ -14,14 +14,13 @@
 enum keys{UP, DOWN, LEFT, RIGHT, Z};
 
 int main (){
-    int n_npc = 2, tam_disp_x = 800, tam_disp_y = 500;
+    int i;
+    int n_npc = 5, tam_disp_x = 800, tam_disp_y = 500;
     bool keys [5] = {false, false, false, false, false};
-    bool Colision [4] = {false, false, false, false};
 
     struct Personagem npc[n_npc];
 
-    struct Personagem personagem1 = cria_personagem(50, 0, 0, 3, 1, machado, personagem_principal_f);
-    struct Personagem p_teste = cria_personagem(50, 500, 150, 3, 1, mao, personagem_teste_f);
+    struct Personagem personagem1 = cria_personagem(50, 0, 0, 3, 1, machado, personagem_principal_f, colision);
 
     //INICIAÇÕES DAS BIBLIOTECAS
     al_init();
@@ -35,17 +34,25 @@ int main (){
     al_set_window_position(display, 100, 10);
     al_set_window_title(display, "Jooj");
 
-    while(true){
-        int i = 0;
-        npc[i] = cria_personagem(50, 500, 150, 3, 1, mao, personagem_teste_f);
-        i++;
-        if(i>=1){
-            break;
-        }
+    for(i=0; i<n_npc; i++){
+        npc[i] = cria_personagem(50, 500-(100*i), 150, 3, 1, mao, personagem_teste_f, colision);
     }
 
     //CONFIGURAÇÕES BASE QUE SERÃO UTILIZADAS
     ALLEGRO_BITMAP* spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
+
+    ALLEGRO_BITMAP* sprite_npc[n_npc];
+    int tam_y_f_t[n_npc], tam_x_f_t [n_npc];
+    int current_frame_y_t[n_npc];
+
+    for(i=0; i<n_npc; i++){
+        sprite_npc[i] = al_load_bitmap(npc[i].frame.local_img);
+        int *tams_f_t = pega_frame(npc[i]);
+        tam_y_f_t[i] = tams_f_t[0];
+        tam_x_f_t[i] = tams_f_t[1];
+        current_frame_y_t[i] = tam_y_f_t[i];
+    }
+
     ALLEGRO_BITMAP* spriteTeste = al_load_bitmap(npc[0].frame.local_img);
 
     ALLEGRO_FONT* font = al_create_builtin_font();
@@ -64,9 +71,7 @@ int main (){
     int tam_y_f_pp = tams_f[0], tam_x_f_pp = tams_f[1];
     int current_frame_y_pp = tam_y_f_pp;
 
-    int *tams_f_t = pega_frame(npc[0]);
-    int tam_y_f_t = tams_f_t[0], tam_x_f_t = tams_f_t[1];
-    int current_frame_y_t = tam_y_f_t;
+
 
     char *texto;
     char *menu_arma, *menu_vida;
@@ -88,26 +93,7 @@ int main (){
         if(personagem1.vida == 0 || npc[0].vida == 0){
             texto = "ACABOU A BATALHA";
         }
-        if(personagem1.pos_x<=-30){
-            Colision[LEFT_C] = true;
-        }else{
-            Colision[LEFT_C] = false;
-        }
-        if(personagem1.pos_x>=tam_disp_x-160){
-            Colision[RIGHT_C] = true;
-        }else{
-            Colision[RIGHT_C] = false;
-        }
-        if(personagem1.pos_y<=-25){
-            Colision[UP_C] = true;
-        }else{
-            Colision[UP_C] = false;
-        }
-        if(personagem1.pos_y>=tam_disp_y-130){
-            Colision[DOWN_C] = true;
-        }else{
-            Colision[DOWN_C] = false;
-        }
+        personagem1 = colision_parede(personagem1, tam_disp_x, tam_disp_y);
 
         if( event.type == ALLEGRO_EVENT_DISPLAY_CLOSE ){ //fecha
           break;
@@ -171,19 +157,19 @@ int main (){
                 frame -= personagem1.frame.n_colunas;
             }
         }
-        if(keys[UP] && Colision[UP_C]==false){
+        if(keys[UP] && personagem1.colision.up==0){
             personagem1.pos_y -= 2;
             current_frame_y_pp = 0;
         }
-        if(keys[DOWN] && Colision[DOWN_C]==false){
+        if(keys[DOWN] && personagem1.colision.down==0){
             personagem1.pos_y += 2;
             current_frame_y_pp = tam_y_f_pp*2;
         }
-        if(keys[RIGHT] && Colision[RIGHT_C]==false){
+        if(keys[RIGHT] && personagem1.colision.right==0){
             personagem1.pos_x += 2;
             current_frame_y_pp = tam_y_f_pp;
         }
-        if(keys[LEFT] && Colision[LEFT_C]==false){
+        if(keys[LEFT] && personagem1.colision.left==0){
             personagem1.pos_x -= 2;
             current_frame_y_pp = tam_y_f_pp*3;
         }
@@ -192,8 +178,11 @@ int main (){
         al_clear_to_color(al_map_rgb(0,0,0));
 
         al_draw_bitmap_region(spriteHeroi, tam_x_f_pp * (int)frame, current_frame_y_pp, tam_x_f_pp, tam_y_f_pp, personagem1.pos_x, personagem1.pos_y, 0);
-        if(npc[0].vida>0){
-            al_draw_bitmap_region(spriteTeste, tam_x_f_t, current_frame_y_t, tam_x_f_t, tam_y_f_t, npc[0].pos_x, npc[0].pos_y, 0);
+
+        for(i=0; i<n_npc; i++){
+            if(npc[i].vida>0){
+                al_draw_bitmap_region(sprite_npc[i], tam_x_f_t[i], current_frame_y_t[i], tam_x_f_t[i], tam_y_f_t[i], npc[i].pos_x, npc[i].pos_y, 0);
+            }
         }
         al_draw_text(font, al_map_rgb(255,255,255), 230, 200, 0, texto);
         al_draw_text(font, al_map_rgb(255,255,255), 50, 50, 0, menu_arma);
