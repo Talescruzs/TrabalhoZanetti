@@ -3,26 +3,25 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/keyboard.h>
-
 #include "personagem.h"
 #include "itens.h"
 #include "frame.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 
-enum keys{UP, DOWN, LEFT, RIGHT, Z};
+enum keys{UP, DOWN, LEFT, RIGHT};
 
 int main (){
-    int i;
+    int i, j = 0;
     int n_npc = 5, tam_disp_x = 1000, tam_disp_y = 500, velocidade = 5;
-    bool keys [5] = {false, false, false, false, false};
+    bool keys [4] = {false, false, false, false};
 
     //CRIAÇÃO DE PERSONAGENS
-    struct Personagem personagem1 = cria_personagem(50, 0, 0, 3, 1, machado, personagem_principal_f, colision);
+    struct Personagem personagem1 = cria_personagem(50, 0, 0, 3, velocidade, machado, personagem_principal_f, colision);
     struct Personagem npc[n_npc];
+    struct Personagem npc_temp[n_npc];
     for(i=0; i<n_npc; i++){
-        npc[i] = cria_personagem(50, 500-(100*i), 150, 3, 1, mao, personagem_teste_f, colision);
+        npc[i] = cria_personagem(50, 100*i, 150, 3, 2, mao, personagem_teste_f, colision);
     }
 
     //INICIAÇÕES DAS BIBLIOTECAS
@@ -88,12 +87,14 @@ int main (){
         if(personagem1.vida <= 0){
             texto = "VOCE PERDEU!!";
         }
-
-        for(i=0; i<n_npc; i++){
-            npc[i] = colision_parede(npc[i], tam_disp_x, tam_disp_y);
-            personagem1 = colision_final(personagem1, npc[i], tam_disp_x, tam_disp_y);
+        if(n_npc>0){
+            for(i=0; i<n_npc; i++){
+                npc[i] = colision_parede(npc[i], tam_disp_x, tam_disp_y);
+                personagem1 = colision_final(personagem1, npc[i], tam_disp_x, tam_disp_y);
+            }
+        }else{
+            personagem1 = colision_parede(personagem1, tam_disp_x, tam_disp_y);
         }
-        //personagem1 = colision_parede(personagem1, tam_disp_x, tam_disp_y);
 
         if( event.type == ALLEGRO_EVENT_DISPLAY_CLOSE ){ //fecha
           break;
@@ -127,12 +128,24 @@ int main (){
             }
             if(event.keyboard.keycode==ALLEGRO_KEY_Z){
                     if(event.type == ALLEGRO_EVENT_KEY_DOWN){
-                        npc[0] = muda_vida(npc[0], dano_real(personagem1)*-1);
-                        printf("\n%d\n", npc[0].vida);
+                        int flag[n_npc];
+                        int c;
+                        for(i=0;i<n_npc;i++){
+                            npc[i] = ataque(personagem1, npc[i], current_frame_y_pp);
+                            if(npc[i].vida<=0){
+                                flag[j] = i;
+                                j++;
+                            }
+                        }
+                        for(i=0;i<j; i++){
+                            for(c=flag[i]; c<n_npc-1;c++){
+                                npc[c] = npc[c+1];
+                            }
+                            n_npc--;
+                        }
+                        j=0;
                     }
             }
-
-
         }else if(event.type == ALLEGRO_EVENT_KEY_UP){
             switch(event.keyboard.keycode){
                 case ALLEGRO_KEY_RIGHT:
@@ -160,19 +173,19 @@ int main (){
         }
         //FAZ O MOVIMENTO DO PERSONAGEM
         if(keys[UP] && personagem1.colision.up==0){
-            personagem1.pos_y -= velocidade;
+            personagem1.pos_y -= personagem1.velocidade;
             current_frame_y_pp = 0;
         }
         if(keys[DOWN] && personagem1.colision.down==0){
-            personagem1.pos_y += velocidade;
+            personagem1.pos_y += personagem1.velocidade;
             current_frame_y_pp = tam_y_f_pp*2;
         }
         if(keys[RIGHT] && personagem1.colision.right==0){
-            personagem1.pos_x += velocidade;
+            personagem1.pos_x += personagem1.velocidade;
             current_frame_y_pp = tam_y_f_pp;
         }
         if(keys[LEFT] && personagem1.colision.left==0){
-            personagem1.pos_x -= velocidade;
+            personagem1.pos_x -= personagem1.velocidade;
             current_frame_y_pp = tam_y_f_pp*3;
         }
 
@@ -183,9 +196,7 @@ int main (){
         }
         //DESENHA NPCS
         for(i=0; i<n_npc; i++){
-            if(npc[i].vida>0){
-                al_draw_bitmap_region(sprite_npc[i], tam_x_f_t[i], current_frame_y_t[i], tam_x_f_t[i], tam_y_f_t[i], npc[i].pos_x, npc[i].pos_y, 0);
-            }
+            al_draw_bitmap_region(sprite_npc[i], tam_x_f_t[i], current_frame_y_t[i], tam_x_f_t[i], tam_y_f_t[i], npc[i].pos_x, npc[i].pos_y, 0);
         }
         //MUCHO TEXTO
         al_draw_text(font, al_map_rgb(255,255,255), 230, 200, 0, texto);

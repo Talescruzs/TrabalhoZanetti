@@ -10,4 +10,3 @@ struct Frame{
 struct Frame personagem_principal_f;
 struct Frame personagem_teste_f;
 #endif
-

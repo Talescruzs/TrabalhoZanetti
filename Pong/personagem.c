@@ -145,10 +145,67 @@ struct Personagem colision_final(struct Personagem personagem, struct Personagem
     return personagem;
 }
 
+
 int dano_real(struct Personagem personagem){
-    printf("%d", personagem.arma.dano);
     return (personagem.ataque+personagem.arma.dano);
 }
+
+struct Personagem ataque(struct Personagem personagem, struct Personagem npc, int current_frame){
+    int var_bambiarra_y = 90, var_bambiarra_x = 70;
+    int alcance = personagem.arma.alcance*40;
+    int pf_p_x = personagem.pos_x+(personagem.frame.total_x/personagem.frame.n_colunas)-var_bambiarra_x;
+    int pf_p_y = personagem.pos_y+(personagem.frame.total_y/personagem.frame.n_linhas)-var_bambiarra_y;
+    int pf_npc_x = npc.pos_x+(npc.frame.total_x/npc.frame.n_colunas)-var_bambiarra_x;
+    int pf_npc_y = npc.pos_y+(npc.frame.total_y/npc.frame.n_linhas)-var_bambiarra_y;
+    int pi_p_x = personagem.pos_x, pi_p_y = personagem.pos_y;
+    int pi_npc_x = npc.pos_x, pi_npc_y = npc.pos_y;
+    int frame = current_frame/(personagem.frame.total_y/personagem.frame.n_linhas);
+    switch (frame){
+        case 0: //cima
+            if(pi_p_x<=pf_npc_x && pi_p_x>=pi_npc_x && pi_npc_y<pi_p_y || (pf_p_x<=pf_npc_x && pf_p_x>=pi_npc_x && pi_npc_y<pi_p_y)){
+                if(pi_p_y-alcance<=pf_npc_y){
+                    npc.vida-=dano_real(personagem);
+                    npc.pos_y-=30;
+                }
+            }
+            return npc;
+            break;
+        case 1: //direita
+            if(pi_p_y<=pf_npc_y && pi_p_y>=pi_npc_y && pi_npc_x>pi_p_x || (pf_p_y<=pf_npc_y && pf_p_y>=pi_npc_y && pi_npc_x>pi_p_x)){
+                if(pf_p_x+alcance>=pi_npc_x){
+                    npc.vida-=dano_real(personagem);
+                    npc.pos_x+=30;
+                }
+            }
+            return npc;
+            break;
+        case 2: //baixo
+            if(pi_p_x<=pf_npc_x && pi_p_x>=pi_npc_x && pi_npc_y>pi_p_y || (pf_p_x<=pf_npc_x && pf_p_x>=pi_npc_x && pi_npc_y>pi_p_y)){
+                if(pf_p_y+alcance>=pi_npc_y){
+                    npc.vida-=dano_real(personagem);
+                    npc.pos_y+=30;
+                }
+            }
+            return npc;
+            break;
+        case 3: //esquerda
+            if(pi_p_y<=pf_npc_y && pi_p_y>=pi_npc_y && pi_npc_x<pi_p_x || (pf_p_y<=pf_npc_y && pf_p_y>=pi_npc_y && pi_npc_x<pi_p_x)){
+                if(pi_p_x-alcance<=pf_npc_x){
+                    npc.vida-=dano_real(personagem);
+                    npc.pos_x-=30;
+                }
+            }
+            return npc;
+            break;
+        default:
+            printf("e");
+            return npc;
+            break;
+    }
+
+
+};
+
 int *pega_frame(struct Personagem personagem){
     int dados[] = {(personagem.frame.total_y/personagem.frame.n_linhas), (personagem.frame.total_x/personagem.frame.n_colunas)};
     return dados;
