@@ -483,7 +483,7 @@
 
 1362338300 c:\allegro\allegromingw\include\allegro5\allegro_image.h
 
-1683422466 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\main.c
+1684190820 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\main.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
@@ -492,6 +492,7 @@
 	"personagem.h"
 	"itens.h"
 	"frame.h"
+	"display.h"
 	<stdio.h>
 	<stdlib.h>
 
@@ -507,7 +508,7 @@
 
 1682963058 c:\users\tcs20\repositorios\trabalhozanetti\pong\itens.h
 
-1683422612 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.c
+1683424861 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.c
 	"personagem.h"
 	"itens.h"
 	"frame.h"
@@ -520,4 +521,21 @@
 
 1683399226 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\frame.c
 	"frame.h"
+
+1684090234 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\display.c
+	"display.h"
+	"personagem.h"
+	<allegro5/allegro.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_image.h>
+	<allegro5/keyboard.h>
+
+1684090189 c:\users\tcs20\repositorios\trabalhozanetti\pong\display.h
+	"personagem.h"
+	<allegro5/allegro.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_image.h>
+	<allegro5/keyboard.h>
 

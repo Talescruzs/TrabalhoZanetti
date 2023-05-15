@@ -19,21 +19,25 @@ struct Personagem muda_vida(struct Personagem personagem, int valor){
 struct Personagem colision_parede(struct Personagem personagem, int tam_x, int tam_y){
     if(personagem.pos_x<=-30){
         personagem.colision.left = 1;
+        personagem.pos_x=-30;
     }else{
         personagem.colision.left = 0;
     }
     if(personagem.pos_x>=tam_x-160){
         personagem.colision.right = 1;
+        personagem.pos_x=tam_x-160;
     }else{
         personagem.colision.right = 0;
     }
     if(personagem.pos_y<=-25){
         personagem.colision.up = 1;
+        personagem.pos_y=-25;
     }else{
         personagem.colision.up = 0;
     }
     if(personagem.pos_y>=tam_y-130){
         personagem.colision.down = 1;
+        personagem.pos_y=tam_y-130;
     }else{
         personagem.colision.down = 0;
     }
@@ -145,11 +149,6 @@ struct Personagem colision_final(struct Personagem personagem, struct Personagem
     return personagem;
 }
 
-
-int dano_real(struct Personagem personagem){
-    return (personagem.ataque+personagem.arma.dano);
-}
-
 struct Personagem ataque(struct Personagem personagem, struct Personagem npc, int current_frame){
     int var_bambiarra_y = 90, var_bambiarra_x = 70;
     int alcance = personagem.arma.alcance*40;
@@ -205,6 +204,10 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
 
 
 };
+
+int dano_real(struct Personagem personagem){
+    return (personagem.ataque+personagem.arma.dano);
+}
 
 int *pega_frame(struct Personagem personagem){
     int dados[] = {(personagem.frame.total_y/personagem.frame.n_linhas), (personagem.frame.total_x/personagem.frame.n_colunas)};
