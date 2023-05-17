@@ -22,11 +22,11 @@ int main (){
 
     //CRIAÇÃO DE PERSONAGENS
     struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, 3, velocidade, machado, personagem_principal_f, colision);
-    struct Personagem npc[n_levels-1][n_npc];
-    struct Personagem npc_temp[n_levels-1][n_npc];
-    for(a=0; a<n_levels-1; a++){
+    struct Personagem npc[n_levels][n_npc];
+    struct Personagem npc_temp[n_levels][n_npc];
+    for(a=0; a<n_levels; a++){
         for(i=0; i<n_npc; i++){
-            npc[a][i] = cria_personagem(50*a, 700-(50*i), 200, 3, 2, mao, personagem_teste_f, colision);
+            npc[a][i] = cria_personagem(50+(50*a), 700-(50*i), 200, 3, 2, mao, personagem_teste_f, colision);
         }
     }
 
@@ -42,13 +42,13 @@ int main (){
 
     //CONFIG DOS SPRITES PARA DESENHAR
     ALLEGRO_BITMAP* spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
-    ALLEGRO_BITMAP* sprite_npc[n_levels-1][n_npc];
+    ALLEGRO_BITMAP* sprite_npc[n_levels][n_npc];
 
     ALLEGRO_BITMAP* sprite_fundo = al_load_bitmap("./imagens/Inkedmapa.png");
     //POPULA SPRITES DOS NPCS
-    int tam_y_f_t[n_levels-1][n_npc], tam_x_f_t[n_levels-1][n_npc];
-    int current_frame_y_t[n_levels-1][n_npc];
-    for(a=0; a<n_levels-1; a++){
+    int tam_y_f_t[n_levels][n_npc], tam_x_f_t[n_levels][n_npc];
+    int current_frame_y_t[n_levels][n_npc];
+    for(a=0; a<n_levels; a++){
         for(i=0; i<n_npc; i++){
             sprite_npc[a][i] = al_load_bitmap(npc[a][i].frame.local_img);
             int *tams_f_t = pega_frame(npc[a][i]);
@@ -90,7 +90,7 @@ int main (){
         itoa(personagem1.vida, nome_vida, 10);
         nome_arma = personagem1.arma.nome;
 
-        if(level<n_levels){
+        if(level<=n_levels){
             finely = pass_level(personagem1, n_npc);
 
             if(finely == 1){
@@ -101,7 +101,7 @@ int main (){
                 finely = 0;
             }
         }
-        if(n_npc>0 && level>0 && level<n_levels){
+        if(n_npc>0 && level>0 && level<=n_levels){
             for(i=0; i<n_npc; i++){
                 npc[level-1][i] = colision_parede(npc[level-1][i], tam_disp_x, tam_disp_y);
                 personagem1 = colision_final(personagem1, npc[level-1][i], tam_disp_x, tam_disp_y);
@@ -144,7 +144,7 @@ int main (){
             }
             if(event.keyboard.keycode==ALLEGRO_KEY_Z){
                     if(event.type == ALLEGRO_EVENT_KEY_DOWN){
-                        if(level>0 && level<n_levels){
+                        if(level>0 && level<=n_levels){
                             int flag[n_npc];
                             int c;
                             for(i=0;i<n_npc;i++){
@@ -214,7 +214,7 @@ int main (){
             al_draw_bitmap_region(spriteHeroi, tam_x_f_pp * (int)frame, current_frame_y_pp, tam_x_f_pp, tam_y_f_pp, personagem1.pos_x, personagem1.pos_y, 0);
         }
         //DESENHA NPCS
-        if(level>0 && level<n_levels){
+        if(level>0 && level<=n_levels){
             for(i=0; i<n_npc; i++){
                 al_draw_bitmap_region(sprite_npc[level-1][i], tam_x_f_t[level-1][i], current_frame_y_t[level-1][i], tam_x_f_t[level-1][i], tam_y_f_t[level-1][i], npc[level-1][i].pos_x, npc[level-1][i].pos_y, 0);
             }
@@ -225,7 +225,7 @@ int main (){
                 al_draw_text(dados.fonte, al_map_rgb(255,255,255), 400, 100+(15*i), 0, texto[i]);
             }
         }
-        if(level == n_levels){
+        if(level > n_levels){
             al_draw_text(dados.fonte, al_map_rgb(255,255,255), 230, 200, 0, texto_final);
         }
         if(personagem1.vida>0){
@@ -244,7 +244,7 @@ int main (){
     //DESTROI TUDO
     al_destroy_bitmap(sprite_fundo);
     al_destroy_bitmap(spriteHeroi);
-    for(a=0; a<n_levels-1; a++){
+    for(a=0; a<n_levels; a++){
         for(i=0; i<n_npc; i++){
             al_destroy_bitmap(sprite_npc[a][i]);
         }
