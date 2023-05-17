@@ -75,20 +75,21 @@ int main (){
     int current_frame_y_pp = tam_y_f_pp;
 
     //TEXTOS DA TELA DO JOGO
-    int text_l_1 = 5;
+    int text_l_1 = 6;
     char *texto[text_l_1], *texto_final, *texto_perdeu;
     char *menu_arma, *menu_vida;
     char *nome_arma, nome_vida[10];
-    texto[0] = "NOSSO HEROI ESTA AQUI, SEU NOME E (NOME)";
-    texto[1] = "VOCE PODE SE LOCOMOVER COM AS SETAS";
-    texto[2] = "E ATACAR COM A TECLA Z";
-    texto[3] = "LEMBRE-SE CUIDADO COM OS INIMIGOS";
-    texto[4] = "JOGO FEITO POR:";
-    texto[5] = "TALES CRUZ DA SILVA, RIAN (SOBRENOME) E MARCUS (SOBRENOME)";
+    texto[0] = "Nosso heroi esta aqui, seu nome e (nome)";
+    texto[1] = "voce pode se locomover com as setas";
+    texto[2] = "e atacar com a tecla Z";
+    texto[3] = "lembre-se, CUIDADO COM OS INIMIGOS";
+    texto[4] = "";
+    texto[5] = "jogo feito por:";
+    texto[6] = "Tales Cruz da Silva, Rian (SOBRENOME) E Marcus (SOBRENOME)";
     texto_final = "VOCE GANHOU ;)";
     texto_perdeu = "VOCE PERDEU :(";
-    menu_arma = "ARMA: ";
-    menu_vida = "VIDA: ";
+    menu_arma = "Arma: ";
+    menu_vida = "Vida: ";
 
     n_npc = 0;
     //COMEÇA
@@ -233,7 +234,7 @@ int main (){
         //MUCHO TEXTO
         if(level == 0){
             for(i=0; i<=text_l_1; i++){
-                al_draw_text(dados.fonte, al_map_rgb(255,255,255), 400, 100+(15*i), 0, texto[i]);
+                al_draw_text(dados.fonte, al_map_rgb(255,255,255), 400, 100+(20*i), 0, texto[i]);
             }
         }
         if(level > n_levels){
