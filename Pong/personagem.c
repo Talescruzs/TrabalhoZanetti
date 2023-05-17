@@ -17,21 +17,21 @@ struct Personagem muda_vida(struct Personagem personagem, int valor){
 }
 
 struct Personagem colision_parede(struct Personagem personagem, int tam_x, int tam_y){
-    if(personagem.pos_x<=-30){
+    if(personagem.pos_x<=0){
         personagem.colision.left = 1;
-        personagem.pos_x=-30;
+        personagem.pos_x=0;
     }else{
         personagem.colision.left = 0;
     }
-    if(personagem.pos_x>=tam_x-160){
+    if(personagem.pos_x>=tam_x-190){
         personagem.colision.right = 1;
-        personagem.pos_x=tam_x-160;
+        personagem.pos_x=tam_x-190;
     }else{
         personagem.colision.right = 0;
     }
-    if(personagem.pos_y<=-25){
+    if(personagem.pos_y<=0){
         personagem.colision.up = 1;
-        personagem.pos_y=-25;
+        personagem.pos_y=0;
     }else{
         personagem.colision.up = 0;
     }
