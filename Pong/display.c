@@ -11,7 +11,7 @@ struct Display inicia_display(int tam_disp_x, int tam_disp_y, int disp_pos_x, in
     al_set_window_position(display, disp_pos_x, disp_pos_y);
     al_set_window_title(display, nome);
     //COISAS MEIO IRRELEVANTES DE MEXER
-    ALLEGRO_FONT* font = al_load_font("C:/Windows/Fonts/arial.ttf", 15, 0);
+    ALLEGRO_FONT* font = al_load_font("./coure.ttf", 15, 0);
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
     //FILA DE EVENTOS
     ALLEGRO_EVENT_QUEUE * event_queue = al_create_event_queue();

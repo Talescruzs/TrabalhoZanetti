@@ -16,9 +16,19 @@ int main (){
     int i, a, j = 0;
     int finely = 0;
     int n_levels = 3, level = 0;
-    int n_npc = 2, tam_disp_x = 958, tam_disp_y = 600, velocidade = 5;
+    int n_npc = 6, n_npc_base = n_npc, tam_disp_x = 958, tam_disp_y = 600, velocidade = 5;
     bool keys [4] = {false, false, false, false};
     int pos_x_inicial = 50, pos_y_inicial = 250;
+
+    /*
+    proxima sprint:
+    criar um outro atributo personagem (current frame)
+    para armazenar o multiplicador da variavel current_frame_y_t[x][y]
+    então, cada vez q o npc mexer, o multiplicador muda o frame da direçaõ do movimento
+    o probema se torna o frame no eixo x;
+    o do eixo x possivelmente funcionara adicionando um atributo (frame) nos personagens
+    para substituir a variavel frame do personagem principal e adicionar movimento nos sprites dos npcs
+    */
 
     //CRIAÇÃO DE PERSONAGENS
     struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, 3, velocidade, machado, personagem_principal_f, colision);
@@ -90,18 +100,18 @@ int main (){
         itoa(personagem1.vida, nome_vida, 10);
         nome_arma = personagem1.arma.nome;
 
-        if(level<=n_levels){
+        if(level<=n_levels && personagem1.vida>0){
             finely = pass_level(personagem1, n_npc);
 
             if(finely == 1){
                 level++;
-                n_npc = 2;
+                n_npc = n_npc_base;
                 personagem1.pos_x = pos_x_inicial;
                 personagem1.pos_y = pos_y_inicial;
                 finely = 0;
             }
         }
-        if(n_npc>0 && level>0 && level<=n_levels){
+        if(n_npc>0 && level>0 && level<=n_levels && personagem1.vida>0){
             for(i=0; i<n_npc; i++){
                 npc[level-1][i] = colision_parede(npc[level-1][i], tam_disp_x, tam_disp_y);
                 npc[level-1][i] = movimento_npc(personagem1, npc[level-1][i]);
@@ -215,7 +225,7 @@ int main (){
             al_draw_bitmap_region(spriteHeroi, tam_x_f_pp * (int)frame, current_frame_y_pp, tam_x_f_pp, tam_y_f_pp, personagem1.pos_x, personagem1.pos_y, 0);
         }
         //DESENHA NPCS
-        if(level>0 && level<=n_levels){
+        if(level>0 && level<=n_levels && personagem1.vida>0){
             for(i=0; i<n_npc; i++){
                 al_draw_bitmap_region(sprite_npc[level-1][i], tam_x_f_t[level-1][i], current_frame_y_t[level-1][i], tam_x_f_t[level-1][i], tam_y_f_t[level-1][i], npc[level-1][i].pos_x, npc[level-1][i].pos_y, 0);
             }
