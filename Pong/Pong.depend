@@ -16,7 +16,7 @@
 	<allegro5/allegro_image.h>
 	<allegro5/keyboard.h>
 
-1683422627 c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.h
+1684335962 c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.h
 	"itens.h"
 	"frame.h"
 
@@ -264,7 +264,7 @@
 1682963062 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\itens.c
 	"itens.h"
 
-1684272626 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.c
+1684335875 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.c
 	"personagem.h"
 	"itens.h"
 	"frame.h"

@@ -25,6 +25,7 @@ struct Personagem colision_parede(struct Personagem personagem, int tam_x, int t
 struct Personagem colision_personagem(struct Personagem personagem, struct Personagem npc);
 struct Personagem colision_final(struct Personagem personagem, struct Personagem npc, int tam_x, int tam_y);
 struct Personagem ataque(struct Personagem personagem, struct Personagem npc, int current_frame);
+struct Personagem movimento_npc(struct Personagem personagem, struct Personagem npc);
 
 //CONFERE PERSONAGEM
 int dano_real(struct Personagem personagem);

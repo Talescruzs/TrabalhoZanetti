@@ -26,7 +26,7 @@ int main (){
     struct Personagem npc_temp[n_levels][n_npc];
     for(a=0; a<n_levels; a++){
         for(i=0; i<n_npc; i++){
-            npc[a][i] = cria_personagem(50+(50*a), 700-(50*i), 200, 3, 2, mao, personagem_teste_f, colision);
+            npc[a][i] = cria_personagem(50+(50*a), 700-(50*i), 200, 3, 1, mao, personagem_teste_f, colision);
         }
     }
 
@@ -104,6 +104,7 @@ int main (){
         if(n_npc>0 && level>0 && level<=n_levels){
             for(i=0; i<n_npc; i++){
                 npc[level-1][i] = colision_parede(npc[level-1][i], tam_disp_x, tam_disp_y);
+                npc[level-1][i] = movimento_npc(personagem1, npc[level-1][i]);
                 personagem1 = colision_final(personagem1, npc[level-1][i], tam_disp_x, tam_disp_y);
             }
         }else{

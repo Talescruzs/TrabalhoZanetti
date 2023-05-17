@@ -15,7 +15,6 @@ struct Personagem muda_vida(struct Personagem personagem, int valor){
     }
     return personagem;
 }
-
 struct Personagem colision_parede(struct Personagem personagem, int tam_x, int tam_y){
     if(personagem.pos_x<=0){
         personagem.colision.left = 1;
@@ -43,7 +42,6 @@ struct Personagem colision_parede(struct Personagem personagem, int tam_x, int t
     }
     return personagem;
 }
-
 struct Personagem colision_personagem(struct Personagem personagem, struct Personagem npc){
     int var_bambiarra_y = 90, var_bambiarra_x = 70;
     if(
@@ -104,7 +102,6 @@ struct Personagem colision_personagem(struct Personagem personagem, struct Perso
 
     return personagem;
 }
-
 struct Personagem colision_final(struct Personagem personagem, struct Personagem npc, int tam_x, int tam_y){
     struct Personagem a = colision_parede(personagem, tam_x, tam_y);
     struct Personagem b = colision_personagem(personagem, npc);
@@ -148,7 +145,6 @@ struct Personagem colision_final(struct Personagem personagem, struct Personagem
 
     return personagem;
 }
-
 struct Personagem ataque(struct Personagem personagem, struct Personagem npc, int current_frame){
     int var_bambiarra_y = 90, var_bambiarra_x = 70;
     int alcance = personagem.arma.alcance*40;
@@ -204,6 +200,22 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
 
 
 };
+
+struct Personagem movimento_npc(struct Personagem personagem, struct Personagem npc){
+    if(personagem.pos_x>=npc.pos_x){
+        npc.pos_x += npc.velocidade;
+    }
+    if(personagem.pos_x<=npc.pos_x){
+        npc.pos_x -= npc.velocidade;
+    }
+    if(personagem.pos_y>=npc.pos_y){
+        npc.pos_y += npc.velocidade;
+    }
+    if(personagem.pos_y<=npc.pos_y){
+        npc.pos_y -= npc.velocidade;
+    }
+    return npc;
+}
 
 int dano_real(struct Personagem personagem){
     return (personagem.ataque+personagem.arma.dano);
