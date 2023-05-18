@@ -14,41 +14,43 @@ enum keys{UP, DOWN, LEFT, RIGHT};
 
 int main (){
     int i, a, j = 0;
-    int finely = 0;
+    int finely = 0, lin = 0;
     int n_levels = 3, level = 0;
-    int n_npc = 6, n_npc_base = n_npc, tam_disp_x = 958, tam_disp_y = 600, velocidade = 5;
+    int n_npc = 4, n_npc_base = n_npc, tam_disp_x = 958, tam_disp_y = 600, velocidade = 5;
     bool keys [4] = {false, false, false, false};
     int pos_x_inicial = 50, pos_y_inicial = 250;
+    float col = 0.f;
 
     /*
     proxima sprint:
     criar um outro atributo personagem (current frame)
     para armazenar o multiplicador da variavel current_frame_y_t[x][y]
-    ent„o, cada vez q o npc mexer, o multiplicador muda o frame da direÁaı do movimento
+    ent√£o, cada vez q o npc mexer, o multiplicador muda o frame da dire√ßa√µ do movimento
     o probema se torna o frame no eixo x;
+
     o do eixo x possivelmente funcionara adicionando um atributo (frame) nos personagens
     para substituir a variavel frame do personagem principal e adicionar movimento nos sprites dos npcs
     */
 
-    //CRIA«√O DE PERSONAGENS
-    struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, 3, velocidade, machado, personagem_principal_f, colision);
+    //CRIA√á√ÉO DE PERSONAGENS
+    struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, lin, col, 3, velocidade, machado, personagem_principal_f, colision);
     struct Personagem npc[n_levels][n_npc];
     struct Personagem npc_temp[n_levels][n_npc];
     for(a=0; a<n_levels; a++){
         for(i=0; i<n_npc; i++){
-            npc[a][i] = cria_personagem(50+(50*a), 700-(50*i), 200, 3, 1, mao, personagem_teste_f, colision);
+            npc[a][i] = cria_personagem(50+(50*a), 700-(50*i), 200, lin, col, 3, 1, mao, personagem_teste_f, colision);
         }
     }
 
-    //INICIA«’ES DAS BIBLIOTECAS
+    //INICIA√á√ïES DAS BIBLIOTECAS
     al_init();
     al_init_font_addon();
     al_init_ttf_addon();
     al_init_image_addon();
     al_install_keyboard();
 
-    //DECLARA«’ES DA JANELA
-    struct Display dados = inicia_display(tam_disp_x, tam_disp_y, 10, 10, "jooj");
+    //DECLARA√á√ïES DA JANELA
+    struct Display dados = inicia_display(tam_disp_x, tam_disp_y, 10, 10, "jogo do balacobaco");
 
     //CONFIG DOS SPRITES PARA DESENHAR
     ALLEGRO_BITMAP* spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
@@ -57,14 +59,13 @@ int main (){
     ALLEGRO_BITMAP* sprite_fundo = al_load_bitmap("./imagens/Inkedmapa.png");
     //POPULA SPRITES DOS NPCS
     int tam_y_f_t[n_levels][n_npc], tam_x_f_t[n_levels][n_npc];
-    int current_frame_y_t[n_levels][n_npc];
     for(a=0; a<n_levels; a++){
         for(i=0; i<n_npc; i++){
             sprite_npc[a][i] = al_load_bitmap(npc[a][i].frame.local_img);
             int *tams_f_t = pega_frame(npc[a][i]);
             tam_y_f_t[a][i] = tams_f_t[0];
             tam_x_f_t[a][i] = tams_f_t[1];
-            current_frame_y_t[a][i] = tam_y_f_t[a][i];
+            npc[a][i].linha = tam_y_f_t[a][i];
         }
     }
 
@@ -86,13 +87,14 @@ int main (){
     texto[4] = "";
     texto[5] = "jogo feito por:";
     texto[6] = "Tales Cruz da Silva, Rian (SOBRENOME) E Marcus (SOBRENOME)";
-    texto_final = "VOCE GANHOU ;)";
-    texto_perdeu = "VOCE PERDEU :(";
+
+    texto_final = "Voce ganhou, parabens, campeao ;) üêÄ£ÄÄ";
+    texto_perdeu = "Voce perdeu, seu lixo :(";
     menu_arma = "Arma: ";
     menu_vida = "Vida: ";
 
     n_npc = 0;
-    //COME«A
+    //COME√áA
     while(true){
         ALLEGRO_EVENT event;
         al_wait_for_event(dados.fila, &event);
@@ -115,7 +117,7 @@ int main (){
         if(n_npc>0 && level>0 && level<=n_levels && personagem1.vida>0){
             for(i=0; i<n_npc; i++){
                 npc[level-1][i] = colision_parede(npc[level-1][i], tam_disp_x, tam_disp_y);
-                npc[level-1][i] = movimento_npc(personagem1, npc[level-1][i]);
+                npc[level-1][i] = movimento_npc(personagem1, npc[level-1][i], tam_y_f_t[level-1][i]);
                 personagem1 = colision_final(personagem1, npc[level-1][i], tam_disp_x, tam_disp_y);
             }
         }else{
@@ -127,7 +129,7 @@ int main (){
         if( event.type == ALLEGRO_EVENT_DISPLAY_CLOSE ){ //fecha
           break;
         }
-        //FUN«’ES DE TECLAS
+        //FUN√á√ïES DE TECLAS
         else if (event.type == ALLEGRO_EVENT_KEY_DOWN){ //quaquer tecla
             if(
                 event.keyboard.keycode==ALLEGRO_KEY_RIGHT ||
@@ -228,7 +230,7 @@ int main (){
         //DESENHA NPCS
         if(level>0 && level<=n_levels && personagem1.vida>0){
             for(i=0; i<n_npc; i++){
-                al_draw_bitmap_region(sprite_npc[level-1][i], tam_x_f_t[level-1][i], current_frame_y_t[level-1][i], tam_x_f_t[level-1][i], tam_y_f_t[level-1][i], npc[level-1][i].pos_x, npc[level-1][i].pos_y, 0);
+                al_draw_bitmap_region(sprite_npc[level-1][i], tam_x_f_t[level-1][i] * (int)npc[level-1][i].coluna, npc[level-1][i].linha, tam_x_f_t[level-1][i], tam_y_f_t[level-1][i], npc[level-1][i].pos_x, npc[level-1][i].pos_y, 0);
             }
         }
         //MUCHO TEXTO

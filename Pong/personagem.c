@@ -3,8 +3,8 @@
 #include "frame.h"
 
 //campo das funções:
-struct Personagem cria_personagem(int vida, int pos_inicial_x, int pos_inicial_y, float ataque, float velocidade, struct Arma arma, struct Frame frame, struct Colision colision){
-    struct Personagem personagem = {vida, pos_inicial_x, pos_inicial_y, ataque, velocidade, arma, frame, colision};
+struct Personagem cria_personagem(int vida, int pos_inicial_x, int pos_inicial_y, int linha, float coluna, float ataque, float velocidade, struct Arma arma, struct Frame frame, struct Colision colision){
+    struct Personagem personagem = {vida, pos_inicial_x, pos_inicial_y, linha, coluna, ataque, velocidade, arma, frame, colision};
 
     return personagem;
 }
@@ -201,18 +201,26 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
 
 };
 
-struct Personagem movimento_npc(struct Personagem personagem, struct Personagem npc){
-    if(personagem.pos_x>=npc.pos_x){
-        npc.pos_x += npc.velocidade;
+struct Personagem movimento_npc(struct Personagem personagem, struct Personagem npc, int tam_f){
+    npc.coluna +=0.1f;
+    if( npc.coluna > npc.frame.n_colunas){
+        npc.coluna -= npc.frame.n_colunas;
     }
-    if(personagem.pos_x<=npc.pos_x){
-        npc.pos_x -= npc.velocidade;
-    }
-    if(personagem.pos_y>=npc.pos_y){
+    if(personagem.pos_y>npc.pos_y){
         npc.pos_y += npc.velocidade;
+        npc.linha = tam_f*2;
     }
-    if(personagem.pos_y<=npc.pos_y){
+    if(personagem.pos_y<npc.pos_y){
         npc.pos_y -= npc.velocidade;
+        npc.linha = 0;
+    }
+    if(personagem.pos_x>npc.pos_x){
+        npc.pos_x += npc.velocidade;
+        npc.linha = tam_f;
+    }
+    if(personagem.pos_x<npc.pos_x){
+        npc.pos_x -= npc.velocidade;
+        npc.linha = tam_f*3;
     }
     return npc;
 }
