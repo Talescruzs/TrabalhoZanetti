@@ -1,11 +1,9 @@
 #include "personagem.h"
 #include "itens.h"
 #include "frame.h"
-
-//campo das funções:
+//CAMPO DAS FUNÇÕES:
 struct Personagem cria_personagem(int vida, int pos_inicial_x, int pos_inicial_y, int linha, float coluna, float ataque, float velocidade, struct Arma arma, struct Frame frame, struct Colision colision){
     struct Personagem personagem = {vida, pos_inicial_x, pos_inicial_y, linha, coluna, ataque, velocidade, arma, frame, colision};
-
     return personagem;
 }
 struct Personagem muda_vida(struct Personagem personagem, int valor){
@@ -99,13 +97,11 @@ struct Personagem colision_personagem(struct Personagem personagem, struct Perso
         personagem.colision.down = 0;
         personagem.colision.up = 0;
     }
-
     return personagem;
 }
 struct Personagem colision_final(struct Personagem personagem, struct Personagem npc, int tam_x, int tam_y){
     struct Personagem a = colision_parede(personagem, tam_x, tam_y);
     struct Personagem b = colision_personagem(personagem, npc);
-
     if(a.colision.down == 0 && b.colision.down == 0){
         personagem.colision.down = 0;
     }else{
@@ -142,7 +138,6 @@ struct Personagem colision_final(struct Personagem personagem, struct Personagem
             personagem.pos_y = b.pos_y;
         }
     }
-
     return personagem;
 }
 struct Personagem ataque(struct Personagem personagem, struct Personagem npc, int current_frame){
@@ -193,14 +188,10 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
             return npc;
             break;
         default:
-            printf("e");
             return npc;
             break;
     }
-
-
 };
-
 struct Personagem movimento_npc(struct Personagem personagem, struct Personagem npc, int tam_f){
     npc.coluna +=0.1f;
     if( npc.coluna > npc.frame.n_colunas){
@@ -224,16 +215,12 @@ struct Personagem movimento_npc(struct Personagem personagem, struct Personagem 
     }
     return npc;
 }
-
 int dano_real(struct Personagem personagem){
     return (personagem.ataque+personagem.arma.dano);
 }
-
 int *pega_frame(struct Personagem personagem){
     int dados[] = {(personagem.frame.total_y/personagem.frame.n_linhas), (personagem.frame.total_x/personagem.frame.n_colunas)};
     return dados;
 }
-
-//preset:
+//PRESET:
 struct Colision colision = {0, 0, 0, 0};
-

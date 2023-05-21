@@ -5,12 +5,13 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/keyboard.h>
-
+//FUNÇÕES
 struct Display inicia_display(int tam_disp_x, int tam_disp_y, int disp_pos_x, int disp_pos_y, char *nome){
+    //CRIAÇÃO DA JANELA
     ALLEGRO_DISPLAY * display = al_create_display(tam_disp_x,tam_disp_y);
     al_set_window_position(display, disp_pos_x, disp_pos_y);
     al_set_window_title(display, nome);
-    //COISAS MEIO IRRELEVANTES DE MEXER
+    //CONFIG TEXTO E TIMER
     ALLEGRO_FONT* font = al_load_font("./Minecraftia-Regular.ttf", 15, 0);
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
     //FILA DE EVENTOS
@@ -19,15 +20,13 @@ struct Display inicia_display(int tam_disp_x, int tam_disp_y, int disp_pos_x, in
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_start_timer(timer);
-
+    //INSERE DADOS NO OBJETO
     struct Display dado;
     dado.display = display;
     dado.fila = event_queue;
     dado.fonte = font;
-
     return dado;
 }
-
 int pass_level(struct Personagem personagem, int n_npc){
     if(n_npc==0 && (personagem.pos_y>=200 && personagem.pos_y<=250) && personagem.pos_x>=760){
         return 1;
@@ -35,13 +34,3 @@ int pass_level(struct Personagem personagem, int n_npc){
         return 0;
     }
 }
-
-
-
-
-
-
-
-
-
-
