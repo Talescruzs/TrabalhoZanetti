@@ -2,6 +2,8 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_audio.h>
 #include <allegro5/keyboard.h>
 #include "personagem.h"
 #include "itens.h"
@@ -32,9 +34,13 @@ int main (){
     al_init_font_addon();
     al_init_ttf_addon();
     al_init_image_addon();
+    al_install_audio();
+    al_init_acodec_addon();
     al_install_keyboard();
     //DECLARAÇÕES DA JANELA
     struct Display dados = inicia_display(tam_disp_x, tam_disp_y, 10, 10, "jogo do balacobaco");
+    ALLEGRO_SAMPLE *musica = al_load_sample("./musicas/fundo1.wav");
+    al_reserve_samples(1);
     //CONFIG DOS SPRITES PARA DESENHAR
     ALLEGRO_BITMAP* spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
     ALLEGRO_BITMAP* sprite_npc[n_levels][n_npc];
@@ -75,6 +81,7 @@ int main (){
     while(true){
         ALLEGRO_EVENT event;
         al_wait_for_event(dados.fila, &event);
+        al_play_sample(musica, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);
         //VALORES DINAMICOS DO PERSONAGEM
         itoa(personagem1.vida, nome_vida, 10);
         nome_arma = personagem1.arma.nome;
@@ -234,6 +241,7 @@ int main (){
             al_destroy_bitmap(sprite_npc[a][i]);
         }
     }
+    al_destroy_sample(musica);
     al_destroy_font(dados.fonte);
     al_destroy_display(dados.display);
     al_destroy_event_queue(dados.fila);
