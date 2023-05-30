@@ -14,34 +14,34 @@ struct Personagem muda_vida(struct Personagem personagem, int valor){
     return personagem;
 }
 struct Personagem colision_parede(struct Personagem personagem, int tam_x, int tam_y){
-    if(personagem.pos_x<=0){
+    if(personagem.pos_x<=25){
         personagem.colision.left = 1;
-        personagem.pos_x=0;
+        personagem.pos_x=25;
     }else{
         personagem.colision.left = 0;
     }
-    if(personagem.pos_x>=tam_x-190){
+    if(personagem.pos_x>=tam_x-50){
         personagem.colision.right = 1;
-        personagem.pos_x=tam_x-190;
+        personagem.pos_x=tam_x-50;
     }else{
         personagem.colision.right = 0;
     }
-    if(personagem.pos_y<=0){
+    if(personagem.pos_y<=30){
         personagem.colision.up = 1;
-        personagem.pos_y=0;
+        personagem.pos_y=30;
     }else{
         personagem.colision.up = 0;
     }
-    if(personagem.pos_y>=tam_y-130){
+    if(personagem.pos_y>=tam_y-60){
         personagem.colision.down = 1;
-        personagem.pos_y=tam_y-130;
+        personagem.pos_y=tam_y-60;
     }else{
         personagem.colision.down = 0;
     }
     return personagem;
 }
 struct Personagem colision_personagem(struct Personagem personagem, struct Personagem npc){
-    int var_bambiarra_y = 90, var_bambiarra_x = 70;
+    int var_bambiarra_y = 30, var_bambiarra_x = 30;
     if(
        personagem.pos_y<npc.pos_y+(npc.frame.total_y/npc.frame.n_linhas)-var_bambiarra_y &&
        personagem.pos_y+(personagem.frame.total_y/personagem.frame.n_linhas)-var_bambiarra_y>npc.pos_y
@@ -141,7 +141,7 @@ struct Personagem colision_final(struct Personagem personagem, struct Personagem
     return personagem;
 }
 struct Personagem ataque(struct Personagem personagem, struct Personagem npc, int current_frame){
-    int var_bambiarra_y = 90, var_bambiarra_x = 70;
+    int var_bambiarra_y = 30, var_bambiarra_x = 30;
     int alcance = personagem.arma.alcance*40;
     int pf_p_x = personagem.pos_x+(personagem.frame.total_x/personagem.frame.n_colunas)-var_bambiarra_x;
     int pf_p_y = personagem.pos_y+(personagem.frame.total_y/personagem.frame.n_linhas)-var_bambiarra_y;
@@ -197,7 +197,7 @@ struct Personagem movimento_npc(struct Personagem personagem, struct Personagem 
     if( npc.coluna > npc.frame.n_colunas){
         npc.coluna -= npc.frame.n_colunas;
     }
-    if(personagem.pos_y>npc.pos_y){
+    if(personagem.pos_y-30>npc.pos_y){
         npc.pos_y += npc.velocidade;
         npc.linha = tam_f*2;
     }
