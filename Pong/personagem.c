@@ -140,6 +140,26 @@ struct Personagem colision_final(struct Personagem personagem, struct Personagem
     }
     return personagem;
 }
+struct Personagem pegou_item(struct Personagem personagem, struct Arma arma, int pos_x, int pos_y){
+    int pFimx = personagem.pos_x+(personagem.frame.total_x/personagem.frame.n_colunas);
+    int pFimy = personagem.pos_y+(personagem.frame.total_y/personagem.frame.n_linhas);
+    if(
+       (
+        (personagem.pos_x>pos_x && personagem.pos_x<pos_x+arma.frame.total_x)
+        ||
+        (pFimx<pos_x+arma.frame.total_x && pFimx>pos_x)
+       )
+       &&
+       (
+        (personagem.pos_y>pos_y&&personagem.pos_y<pos_y+arma.frame.total_y)
+        ||
+        (pFimy<pos_y+arma.frame.total_y && pFimy>pos_y)
+       )
+       ){
+        personagem.arma = arma;
+    }
+    return personagem;
+}
 struct Personagem ataque(struct Personagem personagem, struct Personagem npc, int current_frame){
     int var_bambiarra_y = 30, var_bambiarra_x = 30;
     int alcance = personagem.arma.alcance*40;
@@ -222,5 +242,6 @@ int *pega_frame(struct Personagem personagem){
     int dados[] = {(personagem.frame.total_y/personagem.frame.n_linhas), (personagem.frame.total_x/personagem.frame.n_colunas)};
     return dados;
 }
+
 //PRESET:
 struct Colision colision = {0, 0, 0, 0};

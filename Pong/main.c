@@ -5,9 +5,9 @@
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/keyboard.h>
-#include "personagem.h"
-#include "itens.h"
 #include "frame.h"
+#include "itens.h"
+#include "personagem.h"
 #include "display.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,8 +20,10 @@ int main (){
     int n_npc = 4, n_npc_base = n_npc, tam_disp_x = 958, tam_disp_y = 600, velocidade = 5;
     float col = 0.f;
     bool keys [4] = {false, false, false, false};
+    int pos_item_x = 100, pos_item_y = 100;
+
     //CRIAÇÃO DE PERSONAGENS
-    struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, lin, col, 3, velocidade, pica, personagem_principal_f, colision);
+    struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, lin, col, 3, velocidade, mao, personagem_principal_f, colision);
     struct Personagem npc[n_levels][n_npc];
     struct Personagem npc_temp[n_levels][n_npc];
     for(a=0; a<n_levels; a++){
@@ -45,7 +47,7 @@ int main (){
     ALLEGRO_BITMAP* spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
     ALLEGRO_BITMAP* sprite_npc[n_levels][n_npc];
     ALLEGRO_BITMAP* sprite_fundo = al_load_bitmap("./imagens/Inkedmapa.png");
-    ALLEGRO_BITMAP* sprite_teste = al_load_bitmap("./imagens/bola.png");
+    ALLEGRO_BITMAP* sprite_teste = al_load_bitmap(adaga.frame.local_img);
     //POPULA SPRITES DOS NPCS
     int tam_y_f_t[n_levels][n_npc], tam_x_f_t[n_levels][n_npc];
     for(a=0; a<n_levels; a++){
@@ -80,6 +82,7 @@ int main (){
     //COMEÇA
     n_npc = 0;
     int flag_frame = 0;
+    int flag_item = 0;
     while(true){
         ALLEGRO_EVENT event;
         al_wait_for_event(dados.fila, &event);
@@ -219,8 +222,6 @@ int main (){
         al_clear_to_color(al_map_rgb(0,0,0));
         al_draw_bitmap(sprite_fundo, 0, 0, 0);
 
-        al_draw_bitmap(sprite_teste, 0, 0, 0);
-
         if(personagem1.vida>0){
             al_draw_bitmap_region(spriteHeroi, tam_x_f_pp * (int)personagem1.coluna, personagem1.linha, tam_x_f_pp, tam_y_f_pp, personagem1.pos_x, personagem1.pos_y, 0);
         }
@@ -234,6 +235,14 @@ int main (){
         if(level == 0){
             for(i=0; i<=text_l_1; i++){
                 al_draw_text(dados.fonte, al_map_rgb(255,255,255), 400, 100+(20*i), 0, texto[i]);
+            }
+            struct Arma arma_temp = personagem1.arma;
+            personagem1 = pegou_item(personagem1, pica, pos_item_x, pos_item_y);
+            if(arma_temp.dano!=personagem1.arma.dano){
+                flag_item = 1;
+            }
+            if(flag_item == 0){
+                al_draw_bitmap(sprite_teste, pos_item_x, pos_item_y, 0);
             }
         }
         if(level > n_levels){
@@ -253,6 +262,7 @@ int main (){
     //DESTROI TUDO
     al_destroy_bitmap(sprite_fundo);
     al_destroy_bitmap(spriteHeroi);
+    al_destroy_bitmap(sprite_teste);
     for(a=0; a<n_levels; a++){
         for(i=0; i<n_npc; i++){
             al_destroy_bitmap(sprite_npc[a][i]);

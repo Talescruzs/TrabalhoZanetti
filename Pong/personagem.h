@@ -1,7 +1,7 @@
 #ifndef __PERSONAGEM_H_
 #define __PERSONAGEM_H_
-#include "itens.h"
 #include "frame.h"
+#include "itens.h"
 //CLASSES
 struct Colision{
     int up, down, left, right;
@@ -20,6 +20,7 @@ struct Personagem muda_vida(struct Personagem personagem, int valor);
 struct Personagem colision_parede(struct Personagem personagem, int tam_x, int tam_y);
 struct Personagem colision_personagem(struct Personagem personagem, struct Personagem npc);
 struct Personagem colision_final(struct Personagem personagem, struct Personagem npc, int tam_x, int tam_y);
+struct Personagem pegou_item(struct Personagem personagem, struct Arma arma, int pos_x, int pos_y);
 struct Personagem ataque(struct Personagem personagem, struct Personagem npc, int current_frame);
 struct Personagem movimento_npc(struct Personagem personagem, struct Personagem npc, int tam_f);
     //CONFERE PERSONAGEM
