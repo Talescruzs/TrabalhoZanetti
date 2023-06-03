@@ -21,7 +21,7 @@ int main (){
     float col = 0.f;
     bool keys [4] = {false, false, false, false};
     //CRIAÇÃO DE PERSONAGENS
-    struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, lin, col, 3, velocidade, machado, personagem_principal_f, colision);
+    struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, lin, col, 3, velocidade, pica, personagem_principal_f, colision);
     struct Personagem npc[n_levels][n_npc];
     struct Personagem npc_temp[n_levels][n_npc];
     for(a=0; a<n_levels; a++){
@@ -45,6 +45,7 @@ int main (){
     ALLEGRO_BITMAP* spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
     ALLEGRO_BITMAP* sprite_npc[n_levels][n_npc];
     ALLEGRO_BITMAP* sprite_fundo = al_load_bitmap("./imagens/Inkedmapa.png");
+    ALLEGRO_BITMAP* sprite_teste = al_load_bitmap("./imagens/bola.png");
     //POPULA SPRITES DOS NPCS
     int tam_y_f_t[n_levels][n_npc], tam_x_f_t[n_levels][n_npc];
     for(a=0; a<n_levels; a++){
@@ -78,6 +79,7 @@ int main (){
     menu_vida = "Vida: ";
     //COMEÇA
     n_npc = 0;
+    int flag_frame = 0;
     while(true){
         ALLEGRO_EVENT event;
         al_wait_for_event(dados.fila, &event);
@@ -101,11 +103,23 @@ int main (){
             for(i=0; i<n_npc; i++){
                 npc[level-1][i] = colision_parede(npc[level-1][i], tam_disp_x, tam_disp_y);
                 npc[level-1][i] = movimento_npc(personagem1, npc[level-1][i], tam_y_f_t[level-1][i]);
+                int vida_temp = personagem1.vida;
                 personagem1 = colision_final(personagem1, npc[level-1][i], tam_disp_x, tam_disp_y);
+                if(vida_temp>personagem1.vida){
+                    flag_frame++;
+                }
+                if(flag_frame>0 && flag_frame<50){
+                    personagem1.frame = personagem_principal_dano;
+                    flag_frame++;
+                }else{
+                    flag_frame = 0;
+                    personagem1.frame = personagem_principal_f;
+                }
             }
         }else{
             personagem1 = colision_parede(personagem1, tam_disp_x, tam_disp_y);
         }
+        spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
         //BOTÃO DE FECHAR JANELA
         if( event.type == ALLEGRO_EVENT_DISPLAY_CLOSE ){ //fecha
           break;
@@ -204,6 +218,9 @@ int main (){
         //DESENHO DA TELA (LEMBRA QUE O DE BAIXO SOBRESCREVE O DE CIMA)
         al_clear_to_color(al_map_rgb(0,0,0));
         al_draw_bitmap(sprite_fundo, 0, 0, 0);
+
+        al_draw_bitmap(sprite_teste, 0, 0, 0);
+
         if(personagem1.vida>0){
             al_draw_bitmap_region(spriteHeroi, tam_x_f_pp * (int)personagem1.coluna, personagem1.linha, tam_x_f_pp, tam_y_f_pp, personagem1.pos_x, personagem1.pos_y, 0);
         }

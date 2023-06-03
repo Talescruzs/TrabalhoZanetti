@@ -15,4 +15,5 @@ struct Arma mao;
 struct Arma adaga;
 struct Arma espada;
 struct Arma machado;
+struct Arma pica;
 #endif
