@@ -15,7 +15,7 @@ enum keys{UP, DOWN, LEFT, RIGHT};
 int main (){
     int i, a, j = 0;
     int finely = 0, lin = 0;
-    int n_levels = 3, level = 0;
+    int n_levels = 5, level = 0;
     int pos_x_inicial = 50, pos_y_inicial = 250;
     int n_npc = 4, n_npc_base = n_npc, tam_disp_x = 958, tam_disp_y = 600, velocidade = 5;
     float col = 0.f;
@@ -96,6 +96,7 @@ int main (){
             if(finely == 1){
                 level++;
                 n_npc = n_npc_base;
+                flag_item = 0;
                 personagem1.pos_x = pos_x_inicial;
                 personagem1.pos_y = pos_y_inicial;
                 finely = 0;
@@ -121,6 +122,10 @@ int main (){
             }
         }else{
             personagem1 = colision_parede(personagem1, tam_disp_x, tam_disp_y);
+        }
+        if(n_npc==0){
+            flag_frame = 0;
+            personagem1.frame = personagem_principal_f;
         }
         spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
         //BOTÃO DE FECHAR JANELA
@@ -231,13 +236,30 @@ int main (){
                 al_draw_bitmap_region(sprite_npc[level-1][i], tam_x_f_t[level-1][i] * (int)npc[level-1][i].coluna, npc[level-1][i].linha, tam_x_f_t[level-1][i], tam_y_f_t[level-1][i], npc[level-1][i].pos_x, npc[level-1][i].pos_y, 0);
             }
         }
-        //MUCHO TEXTO
         if(level == 0){
             for(i=0; i<=text_l_1; i++){
                 al_draw_text(dados.fonte, al_map_rgb(255,255,255), 400, 100+(20*i), 0, texto[i]);
             }
             struct Arma arma_temp = personagem1.arma;
-            personagem1 = pegou_item(personagem1, pica, pos_item_x, pos_item_y);
+            personagem1 = pegou_item(personagem1, adaga, pos_item_x, pos_item_y);
+            if(arma_temp.dano!=personagem1.arma.dano){
+                flag_item = 1;
+            }
+            if(flag_item == 0){
+                al_draw_bitmap(sprite_teste, pos_item_x, pos_item_y, 0);
+            }
+        }else if(level == 2){
+            struct Arma arma_temp = personagem1.arma;
+            personagem1 = pegou_item(personagem1, espada, pos_item_x, pos_item_y);
+            if(arma_temp.dano!=personagem1.arma.dano){
+                flag_item = 1;
+            }
+            if(flag_item == 0){
+                al_draw_bitmap(sprite_teste, pos_item_x, pos_item_y, 0);
+            }
+        }else if(level == 4){
+            struct Arma arma_temp = personagem1.arma;
+            personagem1 = pegou_item(personagem1, machado, pos_item_x, pos_item_y);
             if(arma_temp.dano!=personagem1.arma.dano){
                 flag_item = 1;
             }
