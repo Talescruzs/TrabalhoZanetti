@@ -293,3 +293,56 @@
 	"itens.h"
 	"frame.h"
 
+1685443839 source:c:\projetosgit\trabalhozanetti\pong\display.c
+	"display.h"
+	"personagem.h"
+	<allegro5/allegro.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_image.h>
+	<allegro5/keyboard.h>
+
+1685443839 c:\projetosgit\trabalhozanetti\pong\display.h
+	"personagem.h"
+	<allegro5/allegro.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_image.h>
+	<allegro5/keyboard.h>
+
+1686053972 c:\projetosgit\trabalhozanetti\pong\personagem.h
+	"frame.h"
+	"itens.h"
+
+1686100265 c:\projetosgit\trabalhozanetti\pong\frame.h
+
+1686053972 c:\projetosgit\trabalhozanetti\pong\itens.h
+	"frame.h"
+
+1686100265 source:c:\projetosgit\trabalhozanetti\pong\frame.c
+	"frame.h"
+
+1686100265 source:c:\projetosgit\trabalhozanetti\pong\itens.c
+	"frame.h"
+	"itens.h"
+
+1686100265 source:c:\projetosgit\trabalhozanetti\pong\main.c
+	<allegro5/allegro.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_acodec.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/keyboard.h>
+	"frame.h"
+	"itens.h"
+	"personagem.h"
+	"display.h"
+	<stdio.h>
+	<stdlib.h>
+
+1686100265 source:c:\projetosgit\trabalhozanetti\pong\personagem.c
+	"personagem.h"
+	"itens.h"
+	"frame.h"
+
