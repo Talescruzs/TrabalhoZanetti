@@ -10,7 +10,7 @@ struct Frame{
 // PRESETS PERSONAGEM:
 struct Frame personagem_principal_f;
 struct Frame personagem_adaga_f;
-struct Frame personagem_teste_f;
+struct Frame personagem_inimigo_f;
 // PRESETS ITEM:
 struct Frame teste_bola;
 

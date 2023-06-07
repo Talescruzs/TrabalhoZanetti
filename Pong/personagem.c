@@ -41,24 +41,20 @@ struct Personagem colision_parede(struct Personagem personagem, int tam_x, int t
     return personagem;
 }
 struct Personagem colision_personagem(struct Personagem personagem, struct Personagem npc){
-    int var_bambiarra_y = 30, var_bambiarra_x = 30;
-    if(
-       personagem.pos_y<npc.pos_y+(npc.frame.total_y/npc.frame.n_linhas)-var_bambiarra_y &&
-       personagem.pos_y+(personagem.frame.total_y/personagem.frame.n_linhas)-var_bambiarra_y>npc.pos_y
-       ){
-        if(personagem.pos_x<npc.pos_x+(npc.frame.total_x/npc.frame.n_colunas)-var_bambiarra_x &&
-           personagem.pos_x>npc.pos_x
+    int pFimx = personagem.pos_x+(personagem.frame.total_x/personagem.frame.n_colunas);
+    int pFimy = personagem.pos_y+(personagem.frame.total_y/personagem.frame.n_linhas);
+    int nFimx = npc.pos_x+(npc.frame.total_x/npc.frame.n_colunas);
+    int nFimy = npc.pos_y+(npc.frame.total_y/npc.frame.n_linhas);
 
-           ){
+    if(pFimy>npc.pos_y && personagem.pos_y<nFimy){
+        if(nFimx>=personagem.pos_x && npc.pos_x<=personagem.pos_x){
             personagem.colision.left = 1;
             personagem.pos_x+=50;
             personagem.vida -=dano_real(npc);
         }else{
             personagem.colision.left = 0;
         }
-        if(npc.pos_x<personagem.pos_x+(personagem.frame.total_x/personagem.frame.n_colunas)-var_bambiarra_x &&
-           personagem.pos_x<npc.pos_x
-           ){
+        if(pFimx>=npc.pos_x && npc.pos_x>=personagem.pos_x){
             personagem.colision.right = 1;
             personagem.pos_x-=50;
             personagem.vida -=dano_real(npc);
@@ -69,24 +65,15 @@ struct Personagem colision_personagem(struct Personagem personagem, struct Perso
         personagem.colision.left = 0;
         personagem.colision.right = 0;
     }
-    if(
-        personagem.pos_x<npc.pos_x+(npc.frame.total_x/npc.frame.n_colunas)-var_bambiarra_x &&
-        npc.pos_x<personagem.pos_x+(personagem.frame.total_x/personagem.frame.n_colunas)-var_bambiarra_x
-        ){
-        if(
-           personagem.pos_y<npc.pos_y+(npc.frame.total_y/npc.frame.n_linhas)-var_bambiarra_y &&
-           personagem.pos_y>npc.pos_y
-           ){
+    if(pFimx>npc.pos_x && personagem.pos_x<nFimx){
+        if(nFimy>=personagem.pos_y && npc.pos_y<=personagem.pos_y){
             personagem.colision.up = 1;
             personagem.pos_y+=30;
             personagem.vida -=dano_real(npc);
         }else{
             personagem.colision.up = 0;
         }
-        if(
-           personagem.pos_y+(personagem.frame.total_y/personagem.frame.n_linhas)-var_bambiarra_y>npc.pos_y &&
-           personagem.pos_y<npc.pos_y
-           ){
+        if(pFimy>=npc.pos_y && npc.pos_y>=personagem.pos_y){
             personagem.colision.down = 1;
             personagem.pos_y-=30;
             personagem.vida -=dano_real(npc);
@@ -144,18 +131,11 @@ struct Personagem pegou_item(struct Personagem personagem, struct Arma arma, int
     int pFimx = personagem.pos_x+(personagem.frame.total_x/personagem.frame.n_colunas);
     int pFimy = personagem.pos_y+(personagem.frame.total_y/personagem.frame.n_linhas);
     if(
-       (
-        (personagem.pos_x>pos_x && personagem.pos_x<pos_x+arma.frame.total_x)
-        ||
-        (pFimx<pos_x+arma.frame.total_x && pFimx>pos_x)
+        (pFimx>pos_x && personagem.pos_x<pos_x+arma.frame.total_x)
+        &&
+        (pFimy>pos_y && personagem.pos_y<pos_y+arma.frame.total_y)
        )
-       &&
-       (
-        (personagem.pos_y>pos_y&&personagem.pos_y<pos_y+arma.frame.total_y)
-        ||
-        (pFimy<pos_y+arma.frame.total_y && pFimy>pos_y)
-       )
-       ){
+    {
         personagem.arma = arma;
     }
     switch(personagem.arma.dano){
@@ -178,19 +158,18 @@ struct Personagem pegou_item(struct Personagem personagem, struct Arma arma, int
     return personagem;
 }
 struct Personagem ataque(struct Personagem personagem, struct Personagem npc, int current_frame){
-    int var_bambiarra_y = 30, var_bambiarra_x = 30;
+    int pFimx = personagem.pos_x+(personagem.frame.total_x/personagem.frame.n_colunas);
+    int pFimy = personagem.pos_y+(personagem.frame.total_y/personagem.frame.n_linhas);
+    int nFimx = npc.pos_x+(npc.frame.total_x/npc.frame.n_colunas);
+    int nFimy = npc.pos_y+(npc.frame.total_y/npc.frame.n_linhas);
+
     int alcance = personagem.arma.alcance*40;
-    int pf_p_x = personagem.pos_x+(personagem.frame.total_x/personagem.frame.n_colunas)-var_bambiarra_x;
-    int pf_p_y = personagem.pos_y+(personagem.frame.total_y/personagem.frame.n_linhas)-var_bambiarra_y;
-    int pf_npc_x = npc.pos_x+(npc.frame.total_x/npc.frame.n_colunas)-var_bambiarra_x;
-    int pf_npc_y = npc.pos_y+(npc.frame.total_y/npc.frame.n_linhas)-var_bambiarra_y;
-    int pi_p_x = personagem.pos_x, pi_p_y = personagem.pos_y;
-    int pi_npc_x = npc.pos_x, pi_npc_y = npc.pos_y;
     int frame = current_frame/(personagem.frame.total_y/personagem.frame.n_linhas);
+
     switch (frame){
         case 0: //cima
-            if(pi_p_x<=pf_npc_x && pi_p_x>=pi_npc_x && pi_npc_y<pi_p_y || (pf_p_x<=pf_npc_x && pf_p_x>=pi_npc_x && pi_npc_y<pi_p_y)){
-                if(pi_p_y-alcance<=pf_npc_y){
+            if(pFimx>npc.pos_x && personagem.pos_x<nFimx){
+                if(personagem.pos_y-alcance<=nFimy){
                     npc.vida-=dano_real(personagem);
                     npc.pos_y-=30;
                 }
@@ -198,8 +177,8 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
             return npc;
             break;
         case 1: //direita
-            if(pi_p_y<=pf_npc_y && pi_p_y>=pi_npc_y && pi_npc_x>pi_p_x || (pf_p_y<=pf_npc_y && pf_p_y>=pi_npc_y && pi_npc_x>pi_p_x)){
-                if(pf_p_x+alcance>=pi_npc_x){
+            if(pFimy>npc.pos_y && personagem.pos_y<nFimy){
+                if(pFimx+alcance>=npc.pos_x){
                     npc.vida-=dano_real(personagem);
                     npc.pos_x+=30;
                 }
@@ -207,8 +186,8 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
             return npc;
             break;
         case 2: //baixo
-            if(pi_p_x<=pf_npc_x && pi_p_x>=pi_npc_x && pi_npc_y>pi_p_y || (pf_p_x<=pf_npc_x && pf_p_x>=pi_npc_x && pi_npc_y>pi_p_y)){
-                if(pf_p_y+alcance>=pi_npc_y){
+            if(pFimx>npc.pos_x && personagem.pos_x<nFimx){
+                if(personagem.pos_y+alcance>=nFimy){
                     npc.vida-=dano_real(personagem);
                     npc.pos_y+=30;
                 }
@@ -216,8 +195,8 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
             return npc;
             break;
         case 3: //esquerda
-            if(pi_p_y<=pf_npc_y && pi_p_y>=pi_npc_y && pi_npc_x<pi_p_x || (pf_p_y<=pf_npc_y && pf_p_y>=pi_npc_y && pi_npc_x<pi_p_x)){
-                if(pi_p_x-alcance<=pf_npc_x){
+            if(pFimy>npc.pos_y && personagem.pos_y<nFimy){
+                if(personagem.pos_x-alcance<=pFimx){
                     npc.vida-=dano_real(personagem);
                     npc.pos_x-=30;
                 }
@@ -234,7 +213,7 @@ struct Personagem movimento_npc(struct Personagem personagem, struct Personagem 
     if( npc.coluna > npc.frame.n_colunas){
         npc.coluna -= npc.frame.n_colunas;
     }
-    if(personagem.pos_y-30>npc.pos_y){
+    if(personagem.pos_y+30>npc.pos_y){
         npc.pos_y += npc.velocidade;
         npc.linha = tam_f*2;
     }

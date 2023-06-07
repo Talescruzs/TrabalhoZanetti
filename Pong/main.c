@@ -20,7 +20,7 @@ int main (){
     int n_npc = 4, n_npc_base = n_npc, tam_disp_x = 958, tam_disp_y = 600, velocidade = 5;
     float col = 0.f;
     bool keys [4] = {false, false, false, false};
-    int pos_item_x = 100, pos_item_y = 100;
+    int pos_item_x = 200, pos_item_y = 200;
 
     //CRIAÇÃO DE PERSONAGENS
     struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, lin, col, 3, velocidade, mao, personagem_principal_f, colision);
@@ -28,7 +28,7 @@ int main (){
     struct Personagem npc_temp[n_levels][n_npc];
     for(a=0; a<n_levels; a++){
         for(i=0; i<n_npc; i++){
-            npc[a][i] = cria_personagem(50+(50*a), 700-(50*i), 200, lin, col, 3, 1, mao, personagem_teste_f, colision);
+            npc[a][i] = cria_personagem(50+(50*a), 700-(50*i), 200, lin, col, 3, 1, mao, personagem_inimigo_f, colision);
         }
     }
     //INICIAÇÕES DAS BIBLIOTECAS
