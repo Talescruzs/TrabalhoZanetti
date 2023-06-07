@@ -158,6 +158,23 @@ struct Personagem pegou_item(struct Personagem personagem, struct Arma arma, int
        ){
         personagem.arma = arma;
     }
+    switch(personagem.arma.dano){
+    case 0:
+        personagem.frame = personagem_principal_f;
+        break;
+    case 2:
+        personagem.frame = personagem_adaga_f;
+        break;
+    case 5:
+        personagem.frame = personagem_adaga_f;
+        break;
+    case 15:
+        personagem.frame = personagem_adaga_f;
+        break;
+    default:
+        break;
+    }
+
     return personagem;
 }
 struct Personagem ataque(struct Personagem personagem, struct Personagem npc, int current_frame){

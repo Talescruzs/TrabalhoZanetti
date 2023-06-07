@@ -83,6 +83,7 @@ int main (){
     n_npc = 0;
     int flag_frame = 0;
     int flag_item = 0;
+    struct Arma arma_temp;
     while(true){
         ALLEGRO_EVENT event;
         al_wait_for_event(dados.fila, &event);
@@ -90,6 +91,7 @@ int main (){
         //VALORES DINAMICOS DO PERSONAGEM
         itoa(personagem1.vida, nome_vida, 10);
         nome_arma = personagem1.arma.nome;
+        spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
         //PASSAGEM DE LEVEL
         if(level<=n_levels && personagem1.vida>0){
             finely = pass_level(personagem1, n_npc);
@@ -113,11 +115,10 @@ int main (){
                     flag_frame++;
                 }
                 if(flag_frame>0 && flag_frame<50){
-                    personagem1.frame = personagem_principal_dano;
+                    spriteHeroi = al_load_bitmap(personagem1.frame.local_img_dano);
                     flag_frame++;
                 }else{
                     flag_frame = 0;
-                    personagem1.frame = personagem_principal_f;
                 }
             }
         }else{
@@ -127,7 +128,6 @@ int main (){
             flag_frame = 0;
             personagem1.frame = personagem_principal_f;
         }
-        spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
         //BOTÃO DE FECHAR JANELA
         if( event.type == ALLEGRO_EVENT_DISPLAY_CLOSE ){ //fecha
           break;
@@ -240,7 +240,7 @@ int main (){
             for(i=0; i<=text_l_1; i++){
                 al_draw_text(dados.fonte, al_map_rgb(255,255,255), 400, 100+(20*i), 0, texto[i]);
             }
-            struct Arma arma_temp = personagem1.arma;
+            arma_temp = personagem1.arma;
             personagem1 = pegou_item(personagem1, adaga, pos_item_x, pos_item_y);
             if(arma_temp.dano!=personagem1.arma.dano){
                 flag_item = 1;
