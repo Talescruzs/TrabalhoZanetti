@@ -2,8 +2,8 @@
 #include "itens.h"
 #include "frame.h"
 //CAMPO DAS FUNÇÕES:
-struct Personagem cria_personagem(int vida, int pos_inicial_x, int pos_inicial_y, int linha, float coluna, float ataque, float velocidade, struct Arma arma, struct Frame frame, struct Colision colision){
-    struct Personagem personagem = {vida, pos_inicial_x, pos_inicial_y, linha, coluna, ataque, velocidade, arma, frame, colision};
+struct Personagem cria_personagem(int vida, int pos_inicial_x, int pos_inicial_y, int linha, float coluna, float ataque, float velocidade, struct Arma arma, struct Frame frame, struct Colision colision, int level, int i){
+    struct Personagem personagem = {vida+(level*50), pos_inicial_x+(50*i), pos_inicial_y, linha, coluna, ataque, velocidade, arma, frame, colision};
     return personagem;
 }
 struct Personagem muda_vida(struct Personagem personagem, int valor){
@@ -146,10 +146,10 @@ struct Personagem pegou_item(struct Personagem personagem, struct Arma arma, int
         personagem.frame = personagem_adaga_f;
         break;
     case 5:
-        personagem.frame = personagem_adaga_f;
+        personagem.frame = personagem_espada_f;
         break;
     case 15:
-        personagem.frame = personagem_adaga_f;
+        personagem.frame = personagem_machado_f;
         break;
     default:
         break;
@@ -162,6 +162,7 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
     int pFimy = personagem.pos_y+(personagem.frame.total_y/personagem.frame.n_linhas);
     int nFimx = npc.pos_x+(npc.frame.total_x/npc.frame.n_colunas);
     int nFimy = npc.pos_y+(npc.frame.total_y/npc.frame.n_linhas);
+    int knockback = 60;
 
     int alcance = personagem.arma.alcance*40;
     int frame = current_frame/(personagem.frame.total_y/personagem.frame.n_linhas);
@@ -171,7 +172,7 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
             if(pFimx>npc.pos_x && personagem.pos_x<nFimx){
                 if(personagem.pos_y-alcance<=nFimy){
                     npc.vida-=dano_real(personagem);
-                    npc.pos_y-=30;
+                    npc.pos_y-=knockback;
                 }
             }
             return npc;
@@ -180,7 +181,7 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
             if(pFimy>npc.pos_y && personagem.pos_y<nFimy){
                 if(pFimx+alcance>=npc.pos_x){
                     npc.vida-=dano_real(personagem);
-                    npc.pos_x+=30;
+                    npc.pos_x+=knockback;
                 }
             }
             return npc;
@@ -189,7 +190,7 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
             if(pFimx>npc.pos_x && personagem.pos_x<nFimx){
                 if(personagem.pos_y+alcance>=nFimy){
                     npc.vida-=dano_real(personagem);
-                    npc.pos_y+=30;
+                    npc.pos_y+=knockback;
                 }
             }
             return npc;
@@ -198,7 +199,7 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
             if(pFimy>npc.pos_y && personagem.pos_y<nFimy){
                 if(personagem.pos_x-alcance<=pFimx){
                     npc.vida-=dano_real(personagem);
-                    npc.pos_x-=30;
+                    npc.pos_x-=knockback;
                 }
             }
             return npc;

@@ -23,14 +23,15 @@ int main (){
     int pos_item_x = 200, pos_item_y = 200;
 
     //CRIAÇÃO DE PERSONAGENS
-    struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, lin, col, 3, velocidade, mao, personagem_principal_f, colision);
-    struct Personagem npc[n_levels][n_npc];
-    struct Personagem npc_temp[n_levels][n_npc];
-    for(a=0; a<n_levels; a++){
-        for(i=0; i<n_npc; i++){
-            npc[a][i] = cria_personagem(50+(50*a), 700-(50*i), 200, lin, col, 3, 1, mao, personagem_inimigo_f, colision);
-        }
-    }
+    struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, lin, col, 3, velocidade, mao, personagem_principal_f, colision, 0, 0);
+    struct Personagem npc[n_npc];
+    //struct Personagem npc_temp[n_levels][n_npc];
+
+
+    /*for(i=0; i<n_npc; i++){
+        npc[a][i] = cria_personagem(50+(50*a), 700-(50*i), 200, lin, col, 3, 1, mao, personagem_inimigo_f, colision);
+    }*/
+
     //INICIAÇÕES DAS BIBLIOTECAS
     al_init();
     al_init_font_addon();
@@ -45,20 +46,17 @@ int main (){
     al_reserve_samples(1);
     //CONFIG DOS SPRITES PARA DESENHAR
     ALLEGRO_BITMAP* spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
-    ALLEGRO_BITMAP* sprite_npc[n_levels][n_npc];
+    ALLEGRO_BITMAP* sprite_npc[n_npc];
     ALLEGRO_BITMAP* sprite_fundo = al_load_bitmap("./imagens/Inkedmapa.png");
-    ALLEGRO_BITMAP* sprite_teste = al_load_bitmap(adaga.frame.local_img);
-    //POPULA SPRITES DOS NPCS
-    int tam_y_f_t[n_levels][n_npc], tam_x_f_t[n_levels][n_npc];
-    for(a=0; a<n_levels; a++){
-        for(i=0; i<n_npc; i++){
-            sprite_npc[a][i] = al_load_bitmap(npc[a][i].frame.local_img);
-            int *tams_f_t = pega_frame(npc[a][i]);
-            tam_y_f_t[a][i] = tams_f_t[0];
-            tam_x_f_t[a][i] = tams_f_t[1];
-            npc[a][i].linha = tam_y_f_t[a][i];
-        }
-    }
+    ALLEGRO_BITMAP* sprite_arma_1 = al_load_bitmap(adaga.frame.local_img);
+    ALLEGRO_BITMAP* sprite_arma_2 = al_load_bitmap(espada.frame.local_img);
+    ALLEGRO_BITMAP* sprite_arma_3 = al_load_bitmap(machado.frame.local_img);
+    ALLEGRO_BITMAP* sprite_arma_4 = al_load_bitmap(pica.frame.local_img);
+
+
+    int tam_y_f_t[n_npc], tam_x_f_t[n_npc];
+    int *tams_f_t;
+
     //DEFINE SPRITE DO PERSONAGEM PRINCIPAL
     int *tams_f = pega_frame(personagem1);
     int tam_y_f_pp = tams_f[0], tam_x_f_pp = tams_f[1];
@@ -81,9 +79,11 @@ int main (){
     menu_vida = "Vida: ";
     //COMEÇA
     n_npc = 0;
-    int flag_frame = 0;
+    int flag_frame1 = 0;
+    int flag_frame2 = 0;
     int flag_item = 0;
     struct Arma arma_temp;
+    struct Frame frame_temp;
     while(true){
         ALLEGRO_EVENT event;
         al_wait_for_event(dados.fila, &event);
@@ -92,6 +92,9 @@ int main (){
         itoa(personagem1.vida, nome_vida, 10);
         nome_arma = personagem1.arma.nome;
         spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
+        if(personagem1.vida<=0){
+            goto exit_loop;
+        }
         //PASSAGEM DE LEVEL
         if(level<=n_levels && personagem1.vida>0){
             finely = pass_level(personagem1, n_npc);
@@ -102,31 +105,40 @@ int main (){
                 personagem1.pos_x = pos_x_inicial;
                 personagem1.pos_y = pos_y_inicial;
                 finely = 0;
+                for(i=0; i<n_npc; i++){
+                    npc[i] = cria_personagem(10, 500, 250, lin, col, 3, 2, mao, personagem_inimigo_f, colision, level, i);
+                    sprite_npc[i] = al_load_bitmap(npc[i].frame.local_img);
+                    tams_f_t = pega_frame(npc[i]);
+                    tam_y_f_t[i] = tams_f_t[0];
+                    tam_x_f_t[i] = tams_f_t[1];
+                    npc[i].linha = tam_y_f_t[i];
+                }
             }
         }
         //COLISAO
         if(n_npc>0 && level>0 && level<=n_levels && personagem1.vida>0){
             for(i=0; i<n_npc; i++){
-                npc[level-1][i] = colision_parede(npc[level-1][i], tam_disp_x, tam_disp_y);
-                npc[level-1][i] = movimento_npc(personagem1, npc[level-1][i], tam_y_f_t[level-1][i]);
+                npc[i] = colision_parede(npc[i], tam_disp_x, tam_disp_y);
+                npc[i] = movimento_npc(personagem1, npc[i], tam_y_f_t[i]);
                 int vida_temp = personagem1.vida;
-                personagem1 = colision_final(personagem1, npc[level-1][i], tam_disp_x, tam_disp_y);
+                personagem1 = colision_final(personagem1, npc[i], tam_disp_x, tam_disp_y);
                 if(vida_temp>personagem1.vida){
-                    flag_frame++;
+                    flag_frame1++;
                 }
-                if(flag_frame>0 && flag_frame<50){
+                if(flag_frame1>0 && flag_frame1<50){
                     spriteHeroi = al_load_bitmap(personagem1.frame.local_img_dano);
-                    flag_frame++;
+                    flag_frame1++;
                 }else{
-                    flag_frame = 0;
+                    flag_frame1 = 0;
                 }
             }
         }else{
             personagem1 = colision_parede(personagem1, tam_disp_x, tam_disp_y);
         }
+        frame_temp = personagem1.frame;
         if(n_npc==0){
-            flag_frame = 0;
-            personagem1.frame = personagem_principal_f;
+            flag_frame1 = 0;
+            personagem1.frame = frame_temp;
         }
         //BOTÃO DE FECHAR JANELA
         if( event.type == ALLEGRO_EVENT_DISPLAY_CLOSE ){ //fecha
@@ -161,19 +173,29 @@ int main (){
             }
             if(event.keyboard.keycode==ALLEGRO_KEY_Z){
                     if(event.type == ALLEGRO_EVENT_KEY_DOWN){
+                        /*
+                        MOVIMENTO DE ATAQUE
+                        */
+
+                        flag_frame2 ++;
+
+                        /*
+                        MOVIMENTO DE ATAQUE
+                        */
+
                         if(level>0 && level<=n_levels){
                             int flag[n_npc];
                             int c;
                             for(i=0;i<n_npc;i++){
-                                npc[level-1][i] = ataque(personagem1, npc[level-1][i], personagem1.linha);
-                                if(npc[level-1][i].vida<=0){
+                                npc[i] = ataque(personagem1, npc[i], personagem1.linha);
+                                if(npc[i].vida<=0){
                                     flag[j] = i;
                                     j++;
                                 }
                             }
                             for(i=0;i<j; i++){
                                 for(c=flag[i]; c<n_npc-1;c++){
-                                    npc[level-1][c] = npc[level-1][c+1];
+                                    npc[c] = npc[c+1];
                                 }
                                 n_npc--;
                             }
@@ -199,30 +221,52 @@ int main (){
                     break;
             }
         }
+        if(flag_frame2>0 && flag_frame2<40){
+            personagem1.coluna += 0.1f;
+            if( personagem1.coluna > personagem1.frame.n_colunas){
+                personagem1.coluna -= personagem1.frame.n_colunas;
+            }
+            flag_frame2 ++;
+        }else{
+            flag_frame2 = 0;
+        }
         //FAZ O MOVIMENTO DA IMAGEM
-        if(keys[UP] || keys[DOWN] || keys[RIGHT] || keys[LEFT]){
+        if((keys[UP] || keys[DOWN] || keys[RIGHT] || keys[LEFT])&&flag_frame2==0){
             personagem1.coluna += 0.1f;
             if( personagem1.coluna > personagem1.frame.n_colunas){
                 personagem1.coluna -= personagem1.frame.n_colunas;
             }
         }
         //FAZ O MOVIMENTO DO PERSONAGEM
-        if(keys[UP] && personagem1.colision.up==0){
+        if(keys[UP] && personagem1.colision.up==0 && flag_frame2==0){
             personagem1.pos_y -= personagem1.velocidade;
             personagem1.linha = 0;
         }
-        if(keys[DOWN] && personagem1.colision.down==0){
+        if(keys[DOWN] && personagem1.colision.down==0 && flag_frame2==0){
             personagem1.pos_y += personagem1.velocidade;
             personagem1.linha = tam_y_f_pp*2;
         }
-        if(keys[RIGHT] && personagem1.colision.right==0){
+        if(keys[RIGHT] && personagem1.colision.right==0 && flag_frame2==0){
             personagem1.pos_x += personagem1.velocidade;
             personagem1.linha = tam_y_f_pp;
         }
-        if(keys[LEFT] && personagem1.colision.left==0){
+        if(keys[LEFT] && personagem1.colision.left==0 && flag_frame2==0){
             personagem1.pos_x -= personagem1.velocidade;
             personagem1.linha = tam_y_f_pp*3;
         }
+
+        //DEFINE heroi:
+        if(flag_frame1 == 0 && flag_frame2 == 0){
+            spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
+        }else if(flag_frame1!=0&&flag_frame2==0){
+            spriteHeroi = al_load_bitmap(personagem1.frame.local_img_dano);
+        }else if(flag_frame1==0&&flag_frame2!=0){
+            spriteHeroi = al_load_bitmap(personagem1.frame.local_img_ataque);
+        }else{
+            spriteHeroi = al_load_bitmap(personagem1.frame.local_img_ataque_dano);
+        }
+
+
         //DESENHO DA TELA (LEMBRA QUE O DE BAIXO SOBRESCREVE O DE CIMA)
         al_clear_to_color(al_map_rgb(0,0,0));
         al_draw_bitmap(sprite_fundo, 0, 0, 0);
@@ -233,7 +277,7 @@ int main (){
         //DESENHA NPCS
         if(level>0 && level<=n_levels && personagem1.vida>0){
             for(i=0; i<n_npc; i++){
-                al_draw_bitmap_region(sprite_npc[level-1][i], tam_x_f_t[level-1][i] * (int)npc[level-1][i].coluna, npc[level-1][i].linha, tam_x_f_t[level-1][i], tam_y_f_t[level-1][i], npc[level-1][i].pos_x, npc[level-1][i].pos_y, 0);
+                al_draw_bitmap_region(sprite_npc[i], tam_x_f_t[i] * (int)npc[i].coluna, npc[i].linha, tam_x_f_t[i], tam_y_f_t[i], npc[i].pos_x, npc[i].pos_y, 0);
             }
         }
         if(level == 0){
@@ -244,27 +288,33 @@ int main (){
             personagem1 = pegou_item(personagem1, adaga, pos_item_x, pos_item_y);
             if(arma_temp.dano!=personagem1.arma.dano){
                 flag_item = 1;
+                tams_f = pega_frame(personagem1);
+                tam_y_f_pp = tams_f[0], tam_x_f_pp = tams_f[1];
             }
             if(flag_item == 0){
-                al_draw_bitmap(sprite_teste, pos_item_x, pos_item_y, 0);
+                al_draw_bitmap(sprite_arma_1, pos_item_x, pos_item_y, 0);
             }
         }else if(level == 2){
             struct Arma arma_temp = personagem1.arma;
             personagem1 = pegou_item(personagem1, espada, pos_item_x, pos_item_y);
             if(arma_temp.dano!=personagem1.arma.dano){
                 flag_item = 1;
+                tams_f = pega_frame(personagem1);
+                tam_y_f_pp = tams_f[0], tam_x_f_pp = tams_f[1];
             }
             if(flag_item == 0){
-                al_draw_bitmap(sprite_teste, pos_item_x, pos_item_y, 0);
+                al_draw_bitmap(sprite_arma_2, pos_item_x, pos_item_y, 0);
             }
         }else if(level == 4){
             struct Arma arma_temp = personagem1.arma;
             personagem1 = pegou_item(personagem1, machado, pos_item_x, pos_item_y);
             if(arma_temp.dano!=personagem1.arma.dano){
                 flag_item = 1;
+                tams_f = pega_frame(personagem1);
+                tam_y_f_pp = tams_f[0], tam_x_f_pp = tams_f[1];
             }
             if(flag_item == 0){
-                al_draw_bitmap(sprite_teste, pos_item_x, pos_item_y, 0);
+                al_draw_bitmap(sprite_arma_3, pos_item_x, pos_item_y, 0);
             }
         }
         if(level > n_levels){
@@ -284,10 +334,13 @@ int main (){
     //DESTROI TUDO
     al_destroy_bitmap(sprite_fundo);
     al_destroy_bitmap(spriteHeroi);
-    al_destroy_bitmap(sprite_teste);
+    al_destroy_bitmap(sprite_arma_1);
+    al_destroy_bitmap(sprite_arma_2);
+    al_destroy_bitmap(sprite_arma_3);
+    al_destroy_bitmap(sprite_arma_4);
     for(a=0; a<n_levels; a++){
         for(i=0; i<n_npc; i++){
-            al_destroy_bitmap(sprite_npc[a][i]);
+            al_destroy_bitmap(sprite_npc[i]);
         }
     }
     al_destroy_sample(musica);

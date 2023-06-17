@@ -1,5 +1,6 @@
 #include "display.h"
 #include "personagem.h"
+#include "frame.h"
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
@@ -33,4 +34,4 @@ int pass_level(struct Personagem personagem, int n_npc){
     }else{
         return 0;
     }
-}
+};

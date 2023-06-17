@@ -1,14 +1,15 @@
 # depslib dependency file v1.0
-1686165547 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\display.c
+1686951422 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\display.c
 	"display.h"
 	"personagem.h"
+	"frame.h"
 	<allegro5/allegro.h>
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
 	<allegro5/allegro_image.h>
 	<allegro5/keyboard.h>
 
-1686165547 c:\users\tcs20\repositorios\trabalhozanetti\pong\display.h
+1686951421 c:\users\tcs20\repositorios\trabalhozanetti\pong\display.h
 	"personagem.h"
 	<allegro5/allegro.h>
 	<allegro5/allegro_font.h>
@@ -16,11 +17,11 @@
 	<allegro5/allegro_image.h>
 	<allegro5/keyboard.h>
 
-1686165547 c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.h
+1686951469 c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.h
 	"frame.h"
 	"itens.h"
 
-1686167681 c:\users\tcs20\repositorios\trabalhozanetti\pong\frame.h
+1686657366 c:\users\tcs20\repositorios\trabalhozanetti\pong\frame.h
 
 1686165547 c:\users\tcs20\repositorios\trabalhozanetti\pong\itens.h
 	"frame.h"
@@ -259,14 +260,14 @@
 
 1362338300 c:\allegro\allegromingw\include\allegro5\allegro_image.h
 
-1686167663 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\frame.c
+1686657366 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\frame.c
 	"frame.h"
 
-1686165775 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\itens.c
+1686657366 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\itens.c
 	"frame.h"
 	"itens.h"
 
-1686176176 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\main.c
+1687037221 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\main.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
@@ -288,7 +289,7 @@
 1372639132 c:\allegro\allegromingw\include\allegro5\allegro_audio.h
 	"allegro5/allegro.h"
 
-1686176115 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.c
+1686952034 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.c
 	"personagem.h"
 	"itens.h"
 	"frame.h"
