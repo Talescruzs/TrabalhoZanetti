@@ -11,6 +11,8 @@
 #include "display.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+
 enum keys{UP, DOWN, LEFT, RIGHT};
 int main (){
     int i, a, j = 0;
