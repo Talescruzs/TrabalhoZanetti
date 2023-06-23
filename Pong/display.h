@@ -11,6 +11,7 @@ struct Display{
     ALLEGRO_DISPLAY * display;
     ALLEGRO_EVENT_QUEUE * fila;
     ALLEGRO_FONT* fonte;
+    ALLEGRO_TIMER* timer;
 };
 //FUNÇÕES
 struct Display inicia_display(int tam_disp_x, int tam_disp_y, int disp_pos_x, int disp_pos_y, char *nome);

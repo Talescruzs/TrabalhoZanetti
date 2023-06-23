@@ -27,12 +27,6 @@ int main (){
     //CRIAÇÃO DE PERSONAGENS
     struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, lin, col, 3, velocidade, mao, personagem_principal_f, colision, 0, 0);
     struct Personagem npc[n_npc];
-    //struct Personagem npc_temp[n_levels][n_npc];
-
-
-    /*for(i=0; i<n_npc; i++){
-        npc[a][i] = cria_personagem(50+(50*a), 700-(50*i), 200, lin, col, 3, 1, mao, personagem_inimigo_f, colision);
-    }*/
 
     //INICIAÇÕES DAS BIBLIOTECAS
     al_init();
@@ -47,9 +41,15 @@ int main (){
     ALLEGRO_SAMPLE *musica = al_load_sample("./musicas/fundo1.wav");
     al_reserve_samples(1);
     //CONFIG DOS SPRITES PARA DESENHAR
-    ALLEGRO_BITMAP* spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
+    ALLEGRO_BITMAP* spriteHeroiNormal = al_load_bitmap(personagem1.frame.local_img);
+    ALLEGRO_BITMAP* spriteHeroiDano = al_load_bitmap(personagem1.frame.local_img_dano);
+    ALLEGRO_BITMAP* spriteHeroiAtaque = al_load_bitmap(personagem1.frame.local_img_ataque);
+    ALLEGRO_BITMAP* spriteHeroiAtaqueDano = al_load_bitmap(personagem1.frame.local_img_ataque_dano);
+    ALLEGRO_BITMAP* spriteHeroi;
+
     ALLEGRO_BITMAP* sprite_npc[n_npc];
     ALLEGRO_BITMAP* sprite_fundo = al_load_bitmap("./imagens/Inkedmapa.png");
+
     ALLEGRO_BITMAP* sprite_arma_1 = al_load_bitmap(adaga.frame.local_img);
     ALLEGRO_BITMAP* sprite_arma_2 = al_load_bitmap(espada.frame.local_img);
     ALLEGRO_BITMAP* sprite_arma_3 = al_load_bitmap(machado.frame.local_img);
@@ -66,7 +66,6 @@ int main (){
     //TEXTOS DA TELA DO JOGO
     int text_l_1 = 6;
     char *texto[text_l_1], *texto_final, *texto_perdeu;
-    char *menu_arma, *menu_vida;
     char *nome_arma, nome_vida[10];
     texto[0] = "Nosso heroi esta aqui, seu nome e (nome)";
     texto[1] = "voce pode se locomover com as setas";
@@ -77,23 +76,24 @@ int main (){
     texto[6] = "Tales Cruz da Silva, Rian (SOBRENOME) E Marcus (SOBRENOME)";
     texto_final = "Voce ganhou, parabens, campeao ;)";
     texto_perdeu = "Voce perdeu, seu lixo :(";
-    menu_arma = "Arma: ";
-    menu_vida = "Vida: ";
+    char menu_arma[] = "Arma: ";
+    char menu_vida[] = "Vida: ";
     //COMEÇA
     n_npc = 0;
     int flag_frame1 = 0;
     int flag_frame2 = 0;
+    int flag_sprite = 0;
     int flag_item = 0;
     struct Arma arma_temp;
     struct Frame frame_temp;
+    al_play_sample(musica, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);
     while(true){
         ALLEGRO_EVENT event;
         al_wait_for_event(dados.fila, &event);
-        al_play_sample(musica, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);
         //VALORES DINAMICOS DO PERSONAGEM
-        itoa(personagem1.vida, nome_vida, 10);
+        itoa(personagem1.vida, &nome_vida, 10);
         nome_arma = personagem1.arma.nome;
-        spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
+
         if(personagem1.vida<=0){
             goto exit_loop;
         }
@@ -128,7 +128,6 @@ int main (){
                     flag_frame1++;
                 }
                 if(flag_frame1>0 && flag_frame1<50){
-                    spriteHeroi = al_load_bitmap(personagem1.frame.local_img_dano);
                     flag_frame1++;
                 }else{
                     flag_frame1 = 0;
@@ -142,7 +141,7 @@ int main (){
             flag_frame1 = 0;
             personagem1.frame = frame_temp;
         }
-        //BOTÃO DE FECHAR JANELA
+
         if( event.type == ALLEGRO_EVENT_DISPLAY_CLOSE ){ //fecha
           break;
         }
@@ -175,16 +174,7 @@ int main (){
             }
             if(event.keyboard.keycode==ALLEGRO_KEY_Z){
                     if(event.type == ALLEGRO_EVENT_KEY_DOWN){
-                        /*
-                        MOVIMENTO DE ATAQUE
-                        */
-
                         flag_frame2 ++;
-
-                        /*
-                        MOVIMENTO DE ATAQUE
-                        */
-
                         if(level>0 && level<=n_levels){
                             int flag[n_npc];
                             int c;
@@ -257,25 +247,9 @@ int main (){
             personagem1.linha = tam_y_f_pp*3;
         }
 
-        //DEFINE heroi:
-        if(flag_frame1 == 0 && flag_frame2 == 0){
-            spriteHeroi = al_load_bitmap(personagem1.frame.local_img);
-        }else if(flag_frame1!=0&&flag_frame2==0){
-            spriteHeroi = al_load_bitmap(personagem1.frame.local_img_dano);
-        }else if(flag_frame1==0&&flag_frame2!=0){
-            spriteHeroi = al_load_bitmap(personagem1.frame.local_img_ataque);
-        }else{
-            spriteHeroi = al_load_bitmap(personagem1.frame.local_img_ataque_dano);
-        }
-
-
         //DESENHO DA TELA (LEMBRA QUE O DE BAIXO SOBRESCREVE O DE CIMA)
         al_clear_to_color(al_map_rgb(0,0,0));
         al_draw_bitmap(sprite_fundo, 0, 0, 0);
-
-        if(personagem1.vida>0){
-            al_draw_bitmap_region(spriteHeroi, tam_x_f_pp * (int)personagem1.coluna, personagem1.linha, tam_x_f_pp, tam_y_f_pp, personagem1.pos_x, personagem1.pos_y, 0);
-        }
         //DESENHA NPCS
         if(level>0 && level<=n_levels && personagem1.vida>0){
             for(i=0; i<n_npc; i++){
@@ -292,6 +266,7 @@ int main (){
                 flag_item = 1;
                 tams_f = pega_frame(personagem1);
                 tam_y_f_pp = tams_f[0], tam_x_f_pp = tams_f[1];
+                al_destroy_bitmap(sprite_arma_1);
             }
             if(flag_item == 0){
                 al_draw_bitmap(sprite_arma_1, pos_item_x, pos_item_y, 0);
@@ -303,6 +278,7 @@ int main (){
                 flag_item = 1;
                 tams_f = pega_frame(personagem1);
                 tam_y_f_pp = tams_f[0], tam_x_f_pp = tams_f[1];
+                    al_destroy_bitmap(sprite_arma_2);
             }
             if(flag_item == 0){
                 al_draw_bitmap(sprite_arma_2, pos_item_x, pos_item_y, 0);
@@ -314,11 +290,34 @@ int main (){
                 flag_item = 1;
                 tams_f = pega_frame(personagem1);
                 tam_y_f_pp = tams_f[0], tam_x_f_pp = tams_f[1];
+                    al_destroy_bitmap(sprite_arma_3);
             }
             if(flag_item == 0){
                 al_draw_bitmap(sprite_arma_3, pos_item_x, pos_item_y, 0);
             }
         }
+        if(flag_item==1){
+            spriteHeroiNormal = al_load_bitmap(personagem1.frame.local_img);
+            spriteHeroiDano = al_load_bitmap(personagem1.frame.local_img_dano);
+            spriteHeroiAtaque = al_load_bitmap(personagem1.frame.local_img_ataque);
+            spriteHeroiAtaqueDano = al_load_bitmap(personagem1.frame.local_img_ataque_dano);
+            flag_item ++;
+            flag_sprite = 0;
+        }
+        if(flag_frame1 == 0 && flag_frame2 == 0 && flag_sprite!=1){
+            spriteHeroi = spriteHeroiNormal;
+            flag_sprite=1;
+        }else if(flag_frame1!=0&&flag_frame2==0 && flag_sprite!=2){
+            spriteHeroi = spriteHeroiDano;
+            flag_sprite=2;
+        }else if(flag_frame1==0&&flag_frame2!=0 && flag_sprite!=3){
+            spriteHeroi = spriteHeroiAtaque;
+            flag_sprite = 3;
+        }else if(flag_frame1!=0&&flag_frame2!=0 && flag_sprite!=4){
+            spriteHeroi = spriteHeroiAtaqueDano;
+            flag_sprite = 4;
+        }
+
         if(level > n_levels){
             al_draw_text(dados.fonte, al_map_rgb(255,255,255), 230, 200, 0, texto_final);
         }
@@ -330,24 +329,38 @@ int main (){
         }else{
             al_draw_text(dados.fonte, al_map_rgb(255,255,255), 300, 200, 0, texto_perdeu);
         }
+
+        if(personagem1.vida>0){
+            al_draw_bitmap_region(spriteHeroi, tam_x_f_pp * (int)personagem1.coluna, personagem1.linha, tam_x_f_pp, tam_y_f_pp, personagem1.pos_x, personagem1.pos_y, 0);
+        }
         al_flip_display();
     }
     exit_loop:; //PONTO DE FUGA
     //DESTROI TUDO
     al_destroy_bitmap(sprite_fundo);
     al_destroy_bitmap(spriteHeroi);
-    al_destroy_bitmap(sprite_arma_1);
-    al_destroy_bitmap(sprite_arma_2);
-    al_destroy_bitmap(sprite_arma_3);
+    al_destroy_bitmap(spriteHeroiNormal);
+    al_destroy_bitmap(spriteHeroiDano);
+    al_destroy_bitmap(spriteHeroiAtaque);
+    al_destroy_bitmap(spriteHeroiAtaqueDano);
     al_destroy_bitmap(sprite_arma_4);
-    for(a=0; a<n_levels; a++){
-        for(i=0; i<n_npc; i++){
-            al_destroy_bitmap(sprite_npc[i]);
-        }
+    for(i=0; i<n_npc; i++){
+        al_destroy_bitmap(sprite_npc[i]);
     }
     al_destroy_sample(musica);
     al_destroy_font(dados.fonte);
     al_destroy_display(dados.display);
     al_destroy_event_queue(dados.fila);
+    al_destroy_timer(dados.timer);
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
