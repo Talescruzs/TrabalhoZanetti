@@ -38,8 +38,37 @@ int main (){
     al_install_keyboard();
     //DECLARAÇÕES DA JANELA
     struct Display dados = inicia_display(tam_disp_x, tam_disp_y, 10, 10, "jogo do balacobaco");
+
+    al_reserve_samples(3);
+    //MUSICA DE FUNDO:
     ALLEGRO_SAMPLE *musica = al_load_sample("./musicas/fundo1.wav");
-    al_reserve_samples(1);
+    ALLEGRO_SAMPLE_INSTANCE *instMusica = al_create_sample_instance(musica);
+    al_attach_sample_instance_to_mixer(instMusica, al_get_default_mixer());
+    //SONS DOS ATAQUES:
+    ALLEGRO_SAMPLE *som_ataque_1 = al_load_sample("./musicas/dano.wav");
+    ALLEGRO_SAMPLE *som_ataque_2 = al_load_sample(adaga.sons.ataca);
+    ALLEGRO_SAMPLE *som_ataque_3 = al_load_sample(espada.sons.ataca);
+    ALLEGRO_SAMPLE *som_ataque_4 = al_load_sample(machado.sons.ataca);
+    ALLEGRO_SAMPLE_INSTANCE *instance_som_ataque_1 = al_create_sample_instance(som_ataque_1);
+    ALLEGRO_SAMPLE_INSTANCE *instance_som_ataque_2 = al_create_sample_instance(som_ataque_2);
+    ALLEGRO_SAMPLE_INSTANCE *instance_som_ataque_3 = al_create_sample_instance(som_ataque_3);
+    ALLEGRO_SAMPLE_INSTANCE *instance_som_ataque_4 = al_create_sample_instance(som_ataque_4);
+    al_attach_sample_instance_to_mixer(instance_som_ataque_1, al_get_default_mixer());
+    al_attach_sample_instance_to_mixer(instance_som_ataque_2, al_get_default_mixer());
+    al_attach_sample_instance_to_mixer(instance_som_ataque_3, al_get_default_mixer());
+    al_attach_sample_instance_to_mixer(instance_som_ataque_4, al_get_default_mixer());
+    //SONS DE PEGAR ITEM:
+    ALLEGRO_SAMPLE *som_pega_2 = al_load_sample(adaga.sons.pega);
+    ALLEGRO_SAMPLE *som_pega_3 = al_load_sample(espada.sons.pega);
+    ALLEGRO_SAMPLE *som_pega_4 = al_load_sample(machado.sons.pega);
+    ALLEGRO_SAMPLE_INSTANCE *instance_som_pega_2 = al_create_sample_instance(som_pega_2);
+    ALLEGRO_SAMPLE_INSTANCE *instance_som_pega_3 = al_create_sample_instance(som_pega_3);
+    ALLEGRO_SAMPLE_INSTANCE *instance_som_pega_4 = al_create_sample_instance(som_pega_4);
+    al_attach_sample_instance_to_mixer(instance_som_pega_2, al_get_default_mixer());
+    al_attach_sample_instance_to_mixer(instance_som_pega_3, al_get_default_mixer());
+    al_attach_sample_instance_to_mixer(instance_som_pega_4, al_get_default_mixer());
+
+
     //CONFIG DOS SPRITES PARA DESENHAR
     ALLEGRO_BITMAP* spriteHeroiNormal = al_load_bitmap(personagem1.frame.local_img);
     ALLEGRO_BITMAP* spriteHeroiDano = al_load_bitmap(personagem1.frame.local_img_dano);
@@ -86,7 +115,7 @@ int main (){
     int flag_item = 0;
     struct Arma arma_temp;
     struct Frame frame_temp;
-    al_play_sample(musica, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);
+    al_play_sample(musica, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);
     while(true){
         ALLEGRO_EVENT event;
         al_wait_for_event(dados.fila, &event);
@@ -175,6 +204,22 @@ int main (){
             if(event.keyboard.keycode==ALLEGRO_KEY_Z){
                     if(event.type == ALLEGRO_EVENT_KEY_DOWN){
                         flag_frame2 ++;
+                        switch(personagem1.arma.dano){
+                            case 0:
+                                al_play_sample_instance(instance_som_ataque_1);
+                                break;
+                            case 2:
+                                al_play_sample_instance(instance_som_ataque_2);
+                                break;
+                            case 5:
+                                al_play_sample_instance(instance_som_ataque_3);
+                                break;
+                            case 15:
+                                al_play_sample_instance(instance_som_ataque_4);
+                                break;
+                            default:
+                                break;
+                        }
                         if(level>0 && level<=n_levels){
                             int flag[n_npc];
                             int c;
@@ -265,8 +310,11 @@ int main (){
             if(arma_temp.dano!=personagem1.arma.dano){
                 flag_item = 1;
                 tams_f = pega_frame(personagem1);
+                al_play_sample_instance(instance_som_pega_2);
                 tam_y_f_pp = tams_f[0], tam_x_f_pp = tams_f[1];
                 al_destroy_bitmap(sprite_arma_1);
+                al_destroy_sample_instance(instance_som_ataque_1);
+                al_destroy_sample(som_ataque_1);
             }
             if(flag_item == 0){
                 al_draw_bitmap(sprite_arma_1, pos_item_x, pos_item_y, 0);
@@ -277,8 +325,13 @@ int main (){
             if(arma_temp.dano!=personagem1.arma.dano){
                 flag_item = 1;
                 tams_f = pega_frame(personagem1);
+                al_play_sample_instance(instance_som_pega_3);
                 tam_y_f_pp = tams_f[0], tam_x_f_pp = tams_f[1];
                     al_destroy_bitmap(sprite_arma_2);
+                    al_destroy_sample_instance(instance_som_ataque_2);
+                    al_destroy_sample(som_ataque_2);
+                    al_destroy_sample_instance(instance_som_pega_2);
+                    al_destroy_sample(som_pega_2);
             }
             if(flag_item == 0){
                 al_draw_bitmap(sprite_arma_2, pos_item_x, pos_item_y, 0);
@@ -289,8 +342,13 @@ int main (){
             if(arma_temp.dano!=personagem1.arma.dano){
                 flag_item = 1;
                 tams_f = pega_frame(personagem1);
+                al_play_sample_instance(instance_som_pega_4);
                 tam_y_f_pp = tams_f[0], tam_x_f_pp = tams_f[1];
                     al_destroy_bitmap(sprite_arma_3);
+                    al_destroy_sample_instance(instance_som_ataque_3);
+                    al_destroy_sample(som_ataque_3);
+                    al_destroy_sample_instance(instance_som_pega_3);
+                    al_destroy_sample(som_pega_3);
             }
             if(flag_item == 0){
                 al_draw_bitmap(sprite_arma_3, pos_item_x, pos_item_y, 0);
@@ -347,7 +405,12 @@ int main (){
     for(i=0; i<n_npc; i++){
         al_destroy_bitmap(sprite_npc[i]);
     }
+    al_destroy_sample_instance(instMusica);
     al_destroy_sample(musica);
+    al_destroy_sample_instance(instance_som_ataque_4);
+    al_destroy_sample(som_ataque_4);
+    al_destroy_sample_instance(instance_som_pega_4);
+    al_destroy_sample(som_pega_4);
     al_destroy_font(dados.fonte);
     al_destroy_display(dados.display);
     al_destroy_event_queue(dados.fila);

@@ -2,10 +2,15 @@
 #define __ITENS_H_
 #include "frame.h"
 //CLASSES
+struct SonsItens{
+    char *pega;
+    char *ataca;
+};
 struct Arma{
     char nome[20];
     int alcance, dano;
     struct Frame frame;
+    struct SonsItens sons;
 };
 struct Pocao{
     int vida;
