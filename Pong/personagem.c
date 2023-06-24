@@ -188,7 +188,7 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
             break;
         case 2: //baixo
             if(pFimx>npc.pos_x && personagem.pos_x<nFimx){
-                if(personagem.pos_y+alcance>=nFimy){
+                if(pFimy+alcance>=npc.pos_y){
                     npc.vida-=dano_real(personagem);
                     npc.pos_y+=knockback;
                 }

@@ -31,7 +31,7 @@ struct Arma adaga = {
 };
 struct Arma espada = {
     "espada",
-    2, 5,
+    1.5, 5,
     {
         "./imagens/espada_chao.png",
         "./imagens/espada_chao.png",
@@ -46,7 +46,7 @@ struct Arma espada = {
 };
 struct Arma machado = {
     "machado",
-    3, 15,
+    2, 15,
     {
         "./imagens/machado_chao.png",
         "./imagens/machado_chao.png",
