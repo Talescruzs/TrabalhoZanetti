@@ -39,7 +39,7 @@ int main (){
     //DECLARAÇÕES DA JANELA
     struct Display dados = inicia_display(tam_disp_x, tam_disp_y, 10, 10, "jogo do balacobaco");
 
-    al_reserve_samples(3);
+    al_reserve_samples(4);
     //MUSICA DE FUNDO:
     ALLEGRO_SAMPLE *musica = al_load_sample("./musicas/fundo1.wav");
     ALLEGRO_SAMPLE_INSTANCE *instMusica = al_create_sample_instance(musica);
@@ -67,6 +67,10 @@ int main (){
     al_attach_sample_instance_to_mixer(instance_som_pega_2, al_get_default_mixer());
     al_attach_sample_instance_to_mixer(instance_som_pega_3, al_get_default_mixer());
     al_attach_sample_instance_to_mixer(instance_som_pega_4, al_get_default_mixer());
+
+    ALLEGRO_SAMPLE *dano_personagem = al_load_sample("./musicas/Dano/Personagem.wav");
+    ALLEGRO_SAMPLE_INSTANCE *instance_dano_personagem = al_create_sample_instance(dano_personagem);
+    al_attach_sample_instance_to_mixer(instance_dano_personagem, al_get_default_mixer());
 
 
     //CONFIG DOS SPRITES PARA DESENHAR
@@ -115,7 +119,7 @@ int main (){
     int flag_item = 0;
     struct Arma arma_temp;
     struct Frame frame_temp;
-    al_play_sample(musica, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);
+    al_play_sample(musica, 1, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);
     while(true){
         ALLEGRO_EVENT event;
         al_wait_for_event(dados.fila, &event);
@@ -155,6 +159,7 @@ int main (){
                 personagem1 = colision_final(personagem1, npc[i], tam_disp_x, tam_disp_y);
                 if(vida_temp>personagem1.vida){
                     flag_frame1++;
+                    al_play_sample_instance(instance_dano_personagem);
                 }
                 if(flag_frame1>0 && flag_frame1<50){
                     flag_frame1++;
@@ -258,7 +263,7 @@ int main (){
                     break;
             }
         }
-        if(flag_frame2>0 && flag_frame2<40){
+        if(flag_frame2>0 && flag_frame2<20){
             personagem1.coluna += 0.1f;
             if( personagem1.coluna > personagem1.frame.n_colunas){
                 personagem1.coluna -= personagem1.frame.n_colunas;
@@ -411,6 +416,9 @@ int main (){
     al_destroy_sample(som_ataque_4);
     al_destroy_sample_instance(instance_som_pega_4);
     al_destroy_sample(som_pega_4);
+    al_destroy_sample_instance(instance_dano_personagem);
+    al_destroy_sample(dano_personagem);
+
     al_destroy_font(dados.fonte);
     al_destroy_display(dados.display);
     al_destroy_event_queue(dados.fila);
