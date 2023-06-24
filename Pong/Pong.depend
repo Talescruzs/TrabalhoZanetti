@@ -272,7 +272,7 @@
 	"itens.h"
 	"frame.h"
 
-1687564037 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\main.c
+1687564382 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\main.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
