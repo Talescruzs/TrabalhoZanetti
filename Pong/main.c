@@ -29,13 +29,7 @@ int main (){
     struct Personagem npc[n_npc];
 
     //INICIAÇÕES DAS BIBLIOTECAS
-    al_init();
-    al_init_font_addon();
-    al_init_ttf_addon();
-    al_init_image_addon();
-    al_install_audio();
-    al_init_acodec_addon();
-    al_install_keyboard();
+
     //DECLARAÇÕES DA JANELA
     struct Display dados = inicia_display(tam_disp_x, tam_disp_y, 10, 10, "jogo do balacobaco");
 

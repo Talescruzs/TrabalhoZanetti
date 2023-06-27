@@ -8,6 +8,14 @@
 #include <allegro5/keyboard.h>
 //FUNÇÕES
 struct Display inicia_display(int tam_disp_x, int tam_disp_y, int disp_pos_x, int disp_pos_y, char *nome){
+    //INICIAÇÕES DAS BIBLIOTECAS
+    al_init();
+    al_init_font_addon();
+    al_init_ttf_addon();
+    al_init_image_addon();
+    al_install_audio();
+    al_init_acodec_addon();
+    al_install_keyboard();
     //CRIAÇÃO DA JANELA
     ALLEGRO_DISPLAY * display = al_create_display(tam_disp_x,tam_disp_y);
     al_set_window_position(display, disp_pos_x, disp_pos_y);

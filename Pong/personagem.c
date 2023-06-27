@@ -170,7 +170,7 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
     switch (frame){
         case 0: //cima
             if(pFimx>npc.pos_x && personagem.pos_x<nFimx){
-                if(personagem.pos_y-alcance<=nFimy){
+                if(personagem.pos_y-alcance<=nFimy && personagem.pos_y>npc.pos_y){
                     npc.vida-=dano_real(personagem);
                     npc.pos_y-=knockback;
                 }
@@ -179,7 +179,7 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
             break;
         case 1: //direita
             if(pFimy>npc.pos_y && personagem.pos_y<nFimy){
-                if(pFimx+alcance>=npc.pos_x){
+                if(pFimx+alcance>=npc.pos_x && personagem.pos_x<npc.pos_x){
                     npc.vida-=dano_real(personagem);
                     npc.pos_x+=knockback;
                 }
@@ -188,7 +188,7 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
             break;
         case 2: //baixo
             if(pFimx>npc.pos_x && personagem.pos_x<nFimx){
-                if(pFimy+alcance>=npc.pos_y){
+                if(pFimy+alcance>=npc.pos_y && personagem.pos_y<npc.pos_y){
                     npc.vida-=dano_real(personagem);
                     npc.pos_y+=knockback;
                 }
@@ -197,7 +197,7 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
             break;
         case 3: //esquerda
             if(pFimy>npc.pos_y && personagem.pos_y<nFimy){
-                if(personagem.pos_x-alcance<=nFimx){
+                if(personagem.pos_x-alcance<=nFimx && personagem.pos_x>npc.pos_x){
                     npc.vida-=dano_real(personagem);
                     npc.pos_x-=knockback;
                 }

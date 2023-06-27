@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1687556456 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\display.c
+1687627511 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\display.c
 	"display.h"
 	"personagem.h"
 	"frame.h"
@@ -267,12 +267,12 @@
 	"frame.h"
 	"itens.h"
 
-1687564764 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.c
+1687627425 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\personagem.c
 	"personagem.h"
 	"itens.h"
 	"frame.h"
 
-1687627123 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\main.c
+1687627512 source:c:\users\tcs20\repositorios\trabalhozanetti\pong\main.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
