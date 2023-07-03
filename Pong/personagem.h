@@ -20,9 +20,9 @@ struct Personagem muda_vida(struct Personagem personagem, int valor);
 struct Personagem colision_parede(struct Personagem personagem, int tam_x, int tam_y);
 struct Personagem colision_personagem(struct Personagem personagem, struct Personagem npc);
 struct Personagem colision_final(struct Personagem personagem, struct Personagem npc, int tam_x, int tam_y);
-struct Personagem pegou_item(struct Personagem personagem, struct Arma arma, int pos_x, int pos_y);
-struct Personagem ataque(struct Personagem personagem, struct Personagem npc, int current_frame);
-struct Personagem movimento_npc(struct Personagem personagem, struct Personagem npc, int tam_f);
+void pegou_item(struct Personagem *personagem, struct Arma arma, int pos_x, int pos_y);
+void ataque(struct Personagem personagem, struct Personagem *npcP);
+void movimento_npc(struct Personagem personagem, struct Personagem *npcP, int tam_f);
     //CONFERE PERSONAGEM
 int dano_real(struct Personagem personagem);
 int *pega_frame(struct Personagem personagem);

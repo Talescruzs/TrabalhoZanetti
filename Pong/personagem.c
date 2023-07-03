@@ -127,7 +127,8 @@ struct Personagem colision_final(struct Personagem personagem, struct Personagem
     }
     return personagem;
 }
-struct Personagem pegou_item(struct Personagem personagem, struct Arma arma, int pos_x, int pos_y){
+void pegou_item(struct Personagem *p, struct Arma arma, int pos_x, int pos_y){
+    struct Personagem personagem = *p;
     int pFimx = personagem.pos_x+(personagem.frame.total_x/personagem.frame.n_colunas);
     int pFimy = personagem.pos_y+(personagem.frame.total_y/personagem.frame.n_linhas);
     if(
@@ -154,10 +155,11 @@ struct Personagem pegou_item(struct Personagem personagem, struct Arma arma, int
     default:
         break;
     }
-
-    return personagem;
+    *p = personagem;
+    void free(void *p);
 }
-struct Personagem ataque(struct Personagem personagem, struct Personagem npc, int current_frame){
+void ataque(struct Personagem personagem, struct Personagem *npcP){
+    struct Personagem npc = *npcP;
     int pFimx = personagem.pos_x+(personagem.frame.total_x/personagem.frame.n_colunas);
     int pFimy = personagem.pos_y+(personagem.frame.total_y/personagem.frame.n_linhas);
     int nFimx = npc.pos_x+(npc.frame.total_x/npc.frame.n_colunas);
@@ -165,7 +167,7 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
     int knockback = 60;
 
     int alcance = personagem.arma.alcance*40;
-    int frame = current_frame/(personagem.frame.total_y/personagem.frame.n_linhas);
+    int frame = personagem.linha/(personagem.frame.total_y/personagem.frame.n_linhas);
 
     switch (frame){
         case 0: //cima
@@ -175,7 +177,6 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
                     npc.pos_y-=knockback;
                 }
             }
-            return npc;
             break;
         case 1: //direita
             if(pFimy>npc.pos_y && personagem.pos_y<nFimy){
@@ -184,7 +185,6 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
                     npc.pos_x+=knockback;
                 }
             }
-            return npc;
             break;
         case 2: //baixo
             if(pFimx>npc.pos_x && personagem.pos_x<nFimx){
@@ -193,7 +193,6 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
                     npc.pos_y+=knockback;
                 }
             }
-            return npc;
             break;
         case 3: //esquerda
             if(pFimy>npc.pos_y && personagem.pos_y<nFimy){
@@ -202,14 +201,15 @@ struct Personagem ataque(struct Personagem personagem, struct Personagem npc, in
                     npc.pos_x-=knockback;
                 }
             }
-            return npc;
             break;
         default:
-            return npc;
             break;
     }
+    *npcP = npc;
+    void free(void *npcP);
 };
-struct Personagem movimento_npc(struct Personagem personagem, struct Personagem npc, int tam_f){
+void movimento_npc(struct Personagem personagem, struct Personagem *npcP, int tam_f){
+    struct Personagem npc = *npcP;
     npc.coluna +=0.1f;
     if( npc.coluna > npc.frame.n_colunas){
         npc.coluna -= npc.frame.n_colunas;
@@ -230,7 +230,8 @@ struct Personagem movimento_npc(struct Personagem personagem, struct Personagem 
         npc.pos_x -= npc.velocidade;
         npc.linha = tam_f*3;
     }
-    return npc;
+    *npcP = npc;
+    void free(void *npcP);
 }
 int dano_real(struct Personagem personagem){
     return (personagem.ataque+personagem.arma.dano);

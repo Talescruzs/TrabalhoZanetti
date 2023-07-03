@@ -4,7 +4,7 @@
 
 //PRESETS:
 struct Arma mao = {
-    " ", 1,0,
+    " ", 100,100,
     {
         "./imagens/bola.png",
         "./imagens/bola.png",
