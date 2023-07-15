@@ -8,6 +8,12 @@ struct Frame{
     char * local_img_ataque_dano;
     int total_x, total_y, n_linhas, n_colunas;
 };
+
+struct Fundo{
+    char * fechado;
+    char * aberto;
+};
+
 // PRESETS PERSONAGEM:
 struct Frame personagem_principal_f;
 struct Frame personagem_adaga_f;

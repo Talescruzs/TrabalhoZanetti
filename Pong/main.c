@@ -34,6 +34,8 @@ int main (){
     struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, lin, col, 3, velocidade, mao, personagem_principal_f, colision, 0, 0);
     struct Personagem chefe = cria_personagem(100, 500, 300, lin, col, 5, 3, mao, personagem_inimigo_f, colision, 0, 0);
     struct Personagem npc[n_npc_base];
+    struct Fundo fundo_1 = {"./imagens/mapas/mapa2fechado.png","./imagens/mapas/mapa2aberto.png"};
+    struct Fundo fundo_2 = {"./imagens/mapas/mapa1fechado.png","./imagens/mapas/mapa1aberto.png"};
 
     //DECLARAÇÕES DA JANELA E INICIAÇÕES DAS BIBLIOTECAS
     struct Display dados = inicia_display(tam_disp_x, tam_disp_y, 10, 10, "jogo do balacobaco");
@@ -81,7 +83,11 @@ int main (){
     ALLEGRO_BITMAP* sprite_npc[n_npc_base];
     ALLEGRO_BITMAP* sprite_chefe = al_load_bitmap(chefe.frame.local_img);
     //CRIACAO DO SPRITE DO FUNDO:
-    ALLEGRO_BITMAP* sprite_fundo = al_load_bitmap("./imagens/Inkedmapa.png");
+    ALLEGRO_BITMAP* sprite_fundo_1_fechado = al_load_bitmap(fundo_1.fechado);
+    ALLEGRO_BITMAP* sprite_fundo_1_aberto = al_load_bitmap(fundo_1.aberto);
+    ALLEGRO_BITMAP* sprite_fundo_2_fechado = al_load_bitmap(fundo_2.fechado);
+    ALLEGRO_BITMAP* sprite_fundo_2_aberto = al_load_bitmap(fundo_2.aberto);
+    ALLEGRO_BITMAP* sprite_fundo;
     //CRIACAO DOS SPRITES DAS ARMAS:
     ALLEGRO_BITMAP* sprite_arma_1 = al_load_bitmap(adaga.frame.local_img);
     ALLEGRO_BITMAP* sprite_arma_2 = al_load_bitmap(espada.frame.local_img);
@@ -155,8 +161,6 @@ int main (){
                 movimento_npc(personagem1, &chefe, tam_y_f_t[i]);
                 vida_temp = personagem1.vida;
                 personagem1 = colision_final(personagem1, chefe, tam_disp_x, tam_disp_y);
-            }else{
-                personagem1 = colision_parede(personagem1, tam_disp_x, tam_disp_y);
             }
 
             if(personagem1.vida<=0){
@@ -167,6 +171,8 @@ int main (){
                 al_play_sample_instance(instance_dano_personagem);
             }
 
+        }else{
+            personagem1 = colision_parede(personagem1, tam_disp_x, tam_disp_y);
         }
 
         //MANTEM O SPRITE DE DANO POR UM TEMPO:
@@ -178,10 +184,12 @@ int main (){
         //CASO NAO TENHA MAIS INIMIGOS VOLTA PARA O FRAME SEM TOMAR DANO:
         if(n_npc==0){
             flag_frame1 = 0;
+            sprite_fundo = sprite_fundo_1_aberto;
         }
 
         //PASSAGEM E CONSTRUCAO DE LEVEL
         if(level<=n_levels+1){
+            sprite_fundo = sprite_fundo_1_fechado;
             finely = pass_level(personagem1, n_npc);
             if(finely == 1){
                 level++;
@@ -449,6 +457,10 @@ int main (){
     exit_loop:; //PONTO DE FUGA
     //DESTROI TUDO
     al_destroy_bitmap(sprite_fundo);
+    al_destroy_bitmap(sprite_fundo_1_aberto);
+    al_destroy_bitmap(sprite_fundo_1_fechado);
+    al_destroy_bitmap(sprite_fundo_2_aberto);
+    al_destroy_bitmap(sprite_fundo_2_fechado);
     al_destroy_bitmap(spriteHeroi);
     al_destroy_bitmap(spriteHeroiNormal);
     al_destroy_bitmap(spriteHeroiDano);
