@@ -32,7 +32,7 @@ int main (){
 
     //CRIAÇÃO DE PERSONAGENS
     struct Personagem personagem1 = cria_personagem(50, pos_x_inicial, pos_y_inicial, lin, col, 3, velocidade, mao, personagem_principal_f, colision, 0, 0);
-    struct Personagem chefe = cria_personagem(100, 500, 300, lin, col, 5, 3, mao, personagem_inimigo_f, colision, 0, 0);
+    struct Personagem chefe = cria_personagem(100, 500, 300, lin, col, 5, 3, mao, personagem_chefe_f, colision, 0, 0);
     struct Personagem npc[n_npc_base];
     struct Fundo fundo_1 = {"./imagens/mapas/mapa2fechado.png","./imagens/mapas/mapa2aberto.png"};
     struct Fundo fundo_2 = {"./imagens/mapas/mapa1fechado.png","./imagens/mapas/mapa1aberto.png"};
@@ -92,7 +92,6 @@ int main (){
     ALLEGRO_BITMAP* sprite_arma_1 = al_load_bitmap(adaga.frame.local_img);
     ALLEGRO_BITMAP* sprite_arma_2 = al_load_bitmap(espada.frame.local_img);
     ALLEGRO_BITMAP* sprite_arma_3 = al_load_bitmap(machado.frame.local_img);
-    ALLEGRO_BITMAP* sprite_arma_4 = al_load_bitmap(pica.frame.local_img);
 
     //CRIACAO DOS ARMAZENAMENTOS DOS TAMANOS Y E X DOS SPRITES DOS NPCS:
     int tam_y_f_t[n_npc_base], tam_x_f_t[n_npc_base];
@@ -149,6 +148,7 @@ int main (){
 
         //COLISAO E DANO NO HEROI:
         if(n_npc>0 && personagem1.vida>0){
+            sprite_fundo = sprite_fundo_1_fechado;
             if(level>0 && level<=n_levels){
                 for(i=0; i<n_npc; i++){
                     npc[i] = colision_parede(npc[i], tam_disp_x, tam_disp_y);
@@ -173,6 +173,8 @@ int main (){
 
         }else{
             personagem1 = colision_parede(personagem1, tam_disp_x, tam_disp_y);
+            flag_frame1 = 0;
+            sprite_fundo = sprite_fundo_1_aberto;
         }
 
         //MANTEM O SPRITE DE DANO POR UM TEMPO:
@@ -183,13 +185,14 @@ int main (){
         }
         //CASO NAO TENHA MAIS INIMIGOS VOLTA PARA O FRAME SEM TOMAR DANO:
         if(n_npc==0){
-            flag_frame1 = 0;
-            sprite_fundo = sprite_fundo_1_aberto;
+
+        }
+        else{
+
         }
 
         //PASSAGEM E CONSTRUCAO DE LEVEL
         if(level<=n_levels+1){
-            sprite_fundo = sprite_fundo_1_fechado;
             finely = pass_level(personagem1, n_npc);
             if(finely == 1){
                 level++;
@@ -427,7 +430,7 @@ int main (){
             flag_sprite = 4;
         }
 
-        if(level > n_levels){
+        if(level > n_levels+1){
             al_draw_text(dados.fonte, al_map_rgb(255,255,255), 230, 200, 0, texto_final);
         }
         if(personagem1.vida>0){
@@ -466,7 +469,6 @@ int main (){
     al_destroy_bitmap(spriteHeroiDano);
     al_destroy_bitmap(spriteHeroiAtaque);
     al_destroy_bitmap(spriteHeroiAtaqueDano);
-    al_destroy_bitmap(sprite_arma_4);
     for(i=0; i<n_npc; i++){
         al_destroy_bitmap(sprite_npc[i]);
     }

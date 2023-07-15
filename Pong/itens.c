@@ -4,7 +4,7 @@
 
 //PRESETS:
 struct Arma mao = {
-    " ", 100,100,
+    " ", 1,0,
     {
         "./imagens/bola.png",
         "./imagens/bola.png",
@@ -58,16 +58,4 @@ struct Arma machado = {
         "./musicas/PegaArma/machado.wav",
         "./musicas/Ataques/machado.wav"
     }
-};
-struct Arma pica = {
-    "pica",
-    3, 1000,
-    {
-        "./imagens/bola.png",
-        "./imagens/bola.png",
-        "./imagens/bola.png",
-        "./imagens/bola.png",
-        77,77,1,1
-    },
-    {"", ""}
 };
