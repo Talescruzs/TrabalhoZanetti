@@ -26,15 +26,15 @@ struct Personagem colision_parede(struct Personagem personagem, int tam_x, int t
     }else{
         personagem.colision.right = 0;
     }
-    if(personagem.pos_y<=30){
+    if(personagem.pos_y<=50){
         personagem.colision.up = 1;
-        personagem.pos_y=30;
+        personagem.pos_y=50;
     }else{
         personagem.colision.up = 0;
     }
-    if(personagem.pos_y>=tam_y-60){
+    if(personagem.pos_y>=tam_y-80){
         personagem.colision.down = 1;
-        personagem.pos_y=tam_y-60;
+        personagem.pos_y=tam_y-80;
     }else{
         personagem.colision.down = 0;
     }

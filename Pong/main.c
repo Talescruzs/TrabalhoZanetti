@@ -157,6 +157,7 @@ int main (){
                     personagem1 = colision_final(personagem1, npc[i], tam_disp_x, tam_disp_y);
                 }
             }else if(level==(n_levels+1)&&flag_matou_chefe==0){
+                sprite_fundo = sprite_fundo_2_fechado;
                 chefe = colision_parede(chefe, tam_disp_x, tam_disp_y);
                 movimento_npc(personagem1, &chefe, tam_y_f_t[i]);
                 vida_temp = personagem1.vida;
@@ -287,6 +288,7 @@ int main (){
                             ataque(personagem1, &chefe);
                             if(chefe.vida<=0){
                                 flag_matou_chefe = 1;
+                                sprite_fundo = sprite_fundo_2_aberto;
                             }
                         }
                     }
@@ -309,6 +311,7 @@ int main (){
                     break;
             }
         }
+
         if(flag_frame2>0 && flag_frame2<20){
             personagem1.coluna += 0.1f;
             if( personagem1.coluna > personagem1.frame.n_colunas){
@@ -429,10 +432,6 @@ int main (){
             spriteHeroi = spriteHeroiAtaqueDano;
             flag_sprite = 4;
         }
-
-        if(level > n_levels+1){
-            al_draw_text(dados.fonte, al_map_rgb(255,255,255), 230, 200, 0, texto_final);
-        }
         if(personagem1.vida>0){
             al_draw_text(dados.fonte, al_map_rgb(255,255,255), 50, 50, 0, menu_arma);
             al_draw_text(dados.fonte, al_map_rgb(255,255,255), 100, 50, 0, nome_arma);
@@ -441,6 +440,9 @@ int main (){
         }
         if(personagem1.vida>0){
             al_draw_bitmap_region(spriteHeroi, tam_x_f_pp * (int)personagem1.coluna, personagem1.linha, tam_x_f_pp, tam_y_f_pp, personagem1.pos_x, personagem1.pos_y, 0);
+        }
+        if(flag_matou_chefe==1){
+            goto tela_ganhou;
         }
         al_flip_display();
     }
@@ -454,6 +456,122 @@ int main (){
         al_clear_to_color(al_map_rgb(0,0,0));
         al_draw_bitmap(sprite_fundo, 0, 0, 0);
         al_draw_text(dados.fonte, al_map_rgb(255,255,255), 300, 200, 0, texto_perdeu);
+        al_flip_display();
+    }
+
+    tela_ganhou:;
+    while(true){
+        ALLEGRO_EVENT event;
+        al_wait_for_event(dados.fila, &event);
+        if( event.type == ALLEGRO_EVENT_DISPLAY_CLOSE ){ //fecha
+            goto exit_loop;
+        }
+        //FUNÇÕES DE TECLAS
+        else if (event.type == ALLEGRO_EVENT_KEY_DOWN){
+            //MOVIMENTACAO E SAIDA DO JOGO:
+            if(
+                event.keyboard.keycode==ALLEGRO_KEY_RIGHT ||
+                event.keyboard.keycode==ALLEGRO_KEY_LEFT ||
+                event.keyboard.keycode==ALLEGRO_KEY_UP ||
+                event.keyboard.keycode==ALLEGRO_KEY_DOWN ||
+                event.keyboard.keycode==ALLEGRO_KEY_ESCAPE
+            ){
+                switch(event.keyboard.keycode){
+                    case ALLEGRO_KEY_RIGHT:
+                        keys[RIGHT] = true;
+                        break;
+                    case ALLEGRO_KEY_LEFT:
+                        keys[LEFT] = true;
+                        break;
+                    case ALLEGRO_KEY_UP:
+                        keys[UP] = true;
+                        break;
+                    case ALLEGRO_KEY_DOWN:
+                        keys[DOWN] = true;
+                        break;
+                    case ALLEGRO_KEY_ESCAPE:
+                        goto exit_loop;
+                    default:
+                        break;
+                }
+            }
+            if(event.keyboard.keycode==ALLEGRO_KEY_Z){
+                if(event.type == ALLEGRO_EVENT_KEY_DOWN){
+                    flag_frame2 ++;
+                    switch(personagem1.arma.dano){
+                        case 0:
+                            al_play_sample_instance(instance_som_ataque_1);
+                            break;
+                        case 2:
+                            al_play_sample_instance(instance_som_ataque_2);
+                            break;
+                        case 5:
+                            al_play_sample_instance(instance_som_ataque_3);
+                            break;
+                        case 15:
+                            al_play_sample_instance(instance_som_ataque_4);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }else if(event.type == ALLEGRO_EVENT_KEY_UP){
+            switch(event.keyboard.keycode){
+                case ALLEGRO_KEY_RIGHT:
+                    keys[RIGHT] = false;
+                    break;
+                case ALLEGRO_KEY_LEFT:
+                    keys[LEFT] = false;
+                    break;
+                case ALLEGRO_KEY_UP:
+                    keys[UP] = false;
+                    break;
+                case ALLEGRO_KEY_DOWN:
+                    keys[DOWN] = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+        if(flag_frame2>0 && flag_frame2<20){
+            personagem1.coluna += 0.1f;
+            if( personagem1.coluna > personagem1.frame.n_colunas){
+                personagem1.coluna -= personagem1.frame.n_colunas;
+            }
+            flag_frame2 ++;
+        }else{
+            flag_frame2 = 0;
+        }
+        //FAZ O MOVIMENTO DA IMAGEM
+        if((keys[UP] || keys[DOWN] || keys[RIGHT] || keys[LEFT])&&flag_frame2==0){
+            personagem1.coluna += 0.1f;
+            if( personagem1.coluna > personagem1.frame.n_colunas){
+                personagem1.coluna -= personagem1.frame.n_colunas;
+            }
+        }
+        //FAZ O MOVIMENTO DO PERSONAGEM
+        if(keys[UP] && personagem1.colision.up==0 && flag_frame2==0){
+            personagem1.pos_y -= personagem1.velocidade;
+            personagem1.linha = 0;
+        }
+        if(keys[DOWN] && personagem1.colision.down==0 && flag_frame2==0){
+            personagem1.pos_y += personagem1.velocidade;
+            personagem1.linha = tam_y_f_pp*2;
+        }
+        if(keys[RIGHT] && personagem1.colision.right==0 && flag_frame2==0){
+            personagem1.pos_x += personagem1.velocidade;
+            personagem1.linha = tam_y_f_pp;
+        }
+        if(keys[LEFT] && personagem1.colision.left==0 && flag_frame2==0){
+            personagem1.pos_x -= personagem1.velocidade;
+            personagem1.linha = tam_y_f_pp*3;
+        }
+        personagem1 = colision_parede(personagem1, tam_disp_x, tam_disp_y);
+        al_clear_to_color(al_map_rgb(0,0,0));
+        al_draw_bitmap(sprite_fundo, 0, 0, 0);
+        al_draw_bitmap_region(spriteHeroi, tam_x_f_pp * (int)personagem1.coluna, personagem1.linha, tam_x_f_pp, tam_y_f_pp, personagem1.pos_x, personagem1.pos_y, 0);
+        al_draw_text(dados.fonte, al_map_rgb(255,255,255), 300, 200, 0, texto_final);
         al_flip_display();
     }
 

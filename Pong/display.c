@@ -38,7 +38,7 @@ struct Display inicia_display(int tam_disp_x, int tam_disp_y, int disp_pos_x, in
     return dado;
 }
 int pass_level(struct Personagem personagem, int n_npc){
-    if(n_npc==0 && (personagem.pos_y>=200 && personagem.pos_y<=300) && personagem.pos_x>=760){
+    if(n_npc==0 && (personagem.pos_y>=200 && personagem.pos_y<=300) && personagem.pos_x>=770){
         return 1;
     }else{
         return 0;

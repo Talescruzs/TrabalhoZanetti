@@ -17,8 +17,8 @@
 					<Add directory="C:/Allegro/AllegroMinGw/include" />
 				</Compiler>
 				<Linker>
-					<Add option="-static-libgcc" />
 					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
 					<Add library="C:/Allegro/AllegroMinGw/lib/liballegro-5.0.10-static-mt.a" />
 					<Add library="C:/Allegro/AllegroMinGw/lib/liballegro_acodec-5.0.10-static-mt.a" />
 					<Add library="C:/Allegro/AllegroMinGw/lib/liballegro_audio-5.0.10-static-mt.a" />
