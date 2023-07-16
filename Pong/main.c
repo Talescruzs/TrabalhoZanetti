@@ -107,7 +107,7 @@ int main (){
     //TEXTOS DA TELA INICIAL DO JOGO:
     int text_l_1 = 6;
     char *texto[text_l_1];
-    texto[0] = "Nosso heroi esta aqui, seu nome e (nome)";
+    texto[0] = "Nosso heroi esta aqui, seu nome e Juquinha";
     texto[1] = "voce pode se locomover com as setas";
     texto[2] = "e atacar com a tecla Z";
     texto[3] = "lembre-se, CUIDADO COM OS INIMIGOS";
